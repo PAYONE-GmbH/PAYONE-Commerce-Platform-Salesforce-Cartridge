@@ -1,7 +1,7 @@
 {
-  "name": "payone",
+  "name": "pcp-salesforce-cartridge",
   "version": "26.1.0",
-  "description": "Payone",
+  "description": "PAYONE Commerce Platform Cartridge for Salesforce Commerce Cloud",
   "engines": {
     "node": ">=18"
   },
@@ -16,8 +16,13 @@
     "watch": "webpack --env development --watch",
     "build": "webpack --env development"
   },
-  "author": "OSF",
-  "license": "UNLICENSED",
+  "author": "PAYONE GmbH",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PAYONE-GmbH/PAYONE-Commerce-Platform-Salesforce-Cartridge.git"
+  },
+  "homepage": "https://github.com/PAYONE-GmbH/PAYONE-Commerce-Platform-Salesforce-Cartridge#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.29.0",
     "autoprefixer": "^10.4.19",
