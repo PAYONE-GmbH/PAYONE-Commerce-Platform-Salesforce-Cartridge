@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="PaymentTransaction">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="payoneCommerceCaseId">
+                <display-name xml:lang="x-default">PAYONE Commerce Case ID</display-name>
+                <description xml:lang="x-default">PAYONE commerce case identifier used for CSC and reconciliation.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneMerchantReference">
+                <display-name xml:lang="x-default">PAYONE Checkout Reference</display-name>
+                <description xml:lang="x-default">PAYONE checkout merchant reference shown in the PAYONE portal checkout list.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneCheckoutId">
+                <display-name xml:lang="x-default">PAYONE Checkout ID</display-name>
+                <description xml:lang="x-default">PAYONE checkout identifier used for CSC operations.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payonePaymentExecutionId">
+                <display-name xml:lang="x-default">PAYONE Payment Execution ID</display-name>
+                <description xml:lang="x-default">PAYONE payment execution identifier used for capture, refund, and cancel actions.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneCheckoutPaymentStatus">
+                <display-name xml:lang="x-default">PAYONE Checkout Payment Status</display-name>
+                <description xml:lang="x-default">Last known PAYONE checkout-level payment status from checkout.statusOutput.paymentStatus.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneLatestPaymentEventStatus">
+                <display-name xml:lang="x-default">PAYONE Latest Payment Event Status</display-name>
+                <description xml:lang="x-default">Last known PAYONE payment-event status from the latest PaymentEvent.paymentStatus. If no PaymentEvent is available yet, this stores PaymentResponse.status from the same PAYONE StatusValue enum.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneRedirectUrl">
+                <display-name xml:lang="x-default">PAYONE Redirect URL</display-name>
+                <description xml:lang="x-default">PAYONE redirect URL stored while a shopper completes an external payment step such as 3DS.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneCard3DSReturnNonce">
+                <display-name xml:lang="x-default">PAYONE Card 3DS Return Nonce</display-name>
+                <description xml:lang="x-default">Random value stored for a PAYONE card 3DS payment attempt and checked when the shopper returns to SFCC after the 3DS step.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="payonePayment">
+                <display-name xml:lang="x-default">PAYONE Payment</display-name>
+                <attribute attribute-id="payoneMerchantReference"/>
+                <attribute attribute-id="payoneCommerceCaseId"/>
+                <attribute attribute-id="payoneCheckoutId"/>
+                <attribute attribute-id="payonePaymentExecutionId"/>
+                <attribute attribute-id="payoneCheckoutPaymentStatus"/>
+                <attribute attribute-id="payoneLatestPaymentEventStatus"/>
+                <attribute attribute-id="payoneRedirectUrl"/>
+                <attribute attribute-id="payoneCard3DSReturnNonce"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

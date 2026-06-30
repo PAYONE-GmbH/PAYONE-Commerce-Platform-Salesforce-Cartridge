@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <custom-type type-id="PayoneWebhookEvent">
+        <display-name xml:lang="x-default">PAYONE Webhook Event</display-name>
+        <description xml:lang="x-default">Queue entries for PAYONE webhook payload processing.</description>
+        <staging-mode>no-staging</staging-mode>
+        <storage-scope>site</storage-scope>
+        <retention-days>30</retention-days>
+        <key-definition attribute-id="id">
+            <type>string</type>
+            <min-length>0</min-length>
+        </key-definition>
+        <attribute-definitions>
+            <attribute-definition attribute-id="type">
+                <display-name xml:lang="x-default">Type</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="apiVersion">
+                <display-name xml:lang="x-default">API Version</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="merchantId">
+                <display-name xml:lang="x-default">Merchant ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="eventCreated">
+                <display-name xml:lang="x-default">Event Created</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payload">
+                <display-name xml:lang="x-default">Payload</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="processingStatus">
+                <display-name xml:lang="x-default">Processing Status</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="processingAttempts">
+                <display-name xml:lang="x-default">Processing Attempts</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="lastErrorMessage">
+                <display-name xml:lang="x-default">Last Error Message</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="merchantReference">
+                <display-name xml:lang="x-default">Merchant Reference</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="general">
+                <display-name xml:lang="x-default">General</display-name>
+                <attribute attribute-id="id"/>
+                <attribute attribute-id="processingAttempts"/>
+                <attribute attribute-id="processingStatus"/>
+                <attribute attribute-id="lastErrorMessage"/>
+                <attribute attribute-id="payload"/>
+                <attribute attribute-id="eventCreated"/>
+                <attribute attribute-id="type"/>
+                <attribute attribute-id="merchantReference"/>
+            </attribute-group>
+        </group-definitions>
+    </custom-type>
+</metadata>

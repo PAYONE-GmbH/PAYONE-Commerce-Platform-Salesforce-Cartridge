@@ -1,0 +1,54 @@
+{
+    "root": true,
+    "extends": [
+        "airbnb-base/legacy",
+        "prettier"
+    ],
+    "globals": {
+        "empty": "readonly",
+        "customer": "readonly",
+        "session": "readonly",
+        "request": "readonly",
+        "response": "readonly",
+        "jQuery": "readonly"
+    },
+    "env": {
+        "es6": true
+    },
+    "overrides": [
+        {
+            "files": [
+                "cartridges/int_payone_commerce/cartridge/client/**/*.js"
+            ],
+            "env": {
+                "browser": true,
+                "es6": true
+            },
+            "globals": {
+                "window": "readonly",
+                "document": "readonly",
+                "$": "readonly"
+            },
+            "parserOptions": {
+                "ecmaVersion": 2020,
+                "sourceType": "module"
+            },
+            "rules": {
+                "no-console": "off"
+            }
+        }
+    ],
+    "rules": {
+        "import/no-unresolved": "off",
+        "indent": ["error", 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
+        "func-names": "off",
+        "require-jsdoc": "error",
+        "valid-jsdoc": ["error", { "preferType": { "Boolean": "boolean", "Number": "number", "object": "Object", "String": "string" }, "requireReturn": false}],
+        "vars-on-top": "off",
+        "global-require": "off",
+        "no-shadow": ["error", { "allow": ["err", "callback"]}],
+        "max-len": "off",
+        "no-plusplus": "off",
+        "no-param-reassign": "off"
+    }
+}

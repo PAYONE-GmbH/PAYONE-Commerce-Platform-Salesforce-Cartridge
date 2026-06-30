@@ -1,0 +1,3 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommercePaypalForm}" scope="page"/>
+<input type="hidden" name="${paymentFields.tokenInformation.htmlName}" id="paypalForm" value="">
+<div id="paypal-button-container"></div>

@@ -1,0 +1,125 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommerceSecureDirectDebitForm}" scope="page"/>
+<isset name="payoneCommerceCheckoutHelper" value="${require('*/cartridge/scripts/helpers/payoneCommerceCheckoutHelper')}" scope="page" />
+<isset name="dobOptions" value="${payoneCommerceCheckoutHelper.getDobOptions()}" scope="page" />
+
+<!-- IBAN -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.secureDebitIban.mandatory === true}>required</isif>
+            ${paymentFields.secureDebitIban.htmlName}">
+            <label class="form-control-label" for="secureDebitIban">
+                ${Resource.msg(paymentFields.secureDebitIban.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control secureDebitIban"
+                       name="${paymentFields.secureDebitIban.htmlName}"
+                       id="secureDebitIban"
+                       value="${paymentFields.secureDebitIban.htmlValue}">
+                <div class="invalid-feedback" id="secureDebitIbanInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Holder -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.secureDebitAccountHolder.mandatory === true}>required</isif>
+            ${paymentFields.secureDebitAccountHolder.htmlName}">
+            <label class="form-control-label" for="secureDebitAccountHolder">
+                ${Resource.msg(paymentFields.secureDebitAccountHolder.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control secureDebitAccountHolder"
+                       name="${paymentFields.secureDebitAccountHolder.htmlName}"
+                       id="secureDebitAccountHolder"
+                       value="${paymentFields.secureDebitAccountHolder.htmlValue}">
+                <div class="invalid-feedback" id="secureDebitAccountHolderInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DATE OF BIRTH – Select dropdowns -->
+<div class="row">
+<div class="col-12 required form-group">
+        <label class="form-control-label">
+            ${Resource.msg('dateOfBirth','payoneCommerceForm',null)}
+        </label>
+</div>
+    <!-- DAY -->
+    <div class="col-4">
+        <div class="form-group
+            <isif condition=${paymentFields.secureDebitBirthDay.mandatory === true}>required</isif>
+            ${paymentFields.secureDebitBirthDay.htmlName}">
+             <div>
+                <select class="form-control secureDebitBirthDay"
+                        name="${paymentFields.secureDebitBirthDay.htmlName}"
+                        id="secureDebitBirthDay">
+                    <option value="">${Resource.msg(paymentFields.secureDebitBirthDay.label,'payoneCommerceForm',null)}</option>
+                    <isloop items="${dobOptions.days}" var="day">
+                        <option value="${day}"
+                            <isif condition="${paymentFields.secureDebitBirthDay.htmlValue == day}">selected</isif>>
+                            ${day}
+                        </option>
+                    </isloop>
+                </select>
+                <div class="invalid-feedback" id="secureDebitBirthDayInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MONTH -->
+    <div class="col-4">
+        <div class="form-group
+            <isif condition=${paymentFields.secureDebitBirthMonth.mandatory === true}>required</isif>
+            ${paymentFields.secureDebitBirthMonth.htmlName}">
+            <div>
+                <select class="form-control secureDebitBirthMonth"
+                        name="${paymentFields.secureDebitBirthMonth.htmlName}"
+                        id="secureDebitBirthMonth">
+                    <option value="">${Resource.msg(paymentFields.secureDebitBirthMonth.label,'payoneCommerceForm',null)}</option>
+                    <isloop items="${dobOptions.months}" var="month">
+                        <option value="${month}"
+                            <isif condition="${paymentFields.secureDebitBirthMonth.htmlValue == month}">selected</isif>>
+                            ${month}
+                        </option>
+                    </isloop>
+                </select>
+                <div class="invalid-feedback" id="secureDebitBirthMonthInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YEAR -->
+    <div class="col-4">
+        <div class="form-group
+            <isif condition=${paymentFields.secureDebitBirthYear.mandatory === true}>required</isif>
+            ${paymentFields.secureDebitBirthYear.htmlName}">
+            <div>
+                <select class="form-control secureDebitBirthYear"
+                        name="${paymentFields.secureDebitBirthYear.htmlName}"
+                        id="secureDebitBirthYear">
+
+                    <option value="">${Resource.msg(paymentFields.secureDebitBirthYear.label,'payoneCommerceForm',null)}</option>
+
+                    <!-- Generate years from current year down to 110 years ago -->
+
+                    <isloop items="${dobOptions.years}" var="year">
+                        <option value="${year}"
+                            <isif condition="${paymentFields.secureDebitBirthYear.htmlValue == year}">selected</isif>>
+                            ${year}
+                        </option>
+                    </isloop>
+
+                </select>
+                <div class="invalid-feedback" id="secureDebitBirthYearInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+    <isslot id="payone-secure-terms" context="global" description="" />
+</div>

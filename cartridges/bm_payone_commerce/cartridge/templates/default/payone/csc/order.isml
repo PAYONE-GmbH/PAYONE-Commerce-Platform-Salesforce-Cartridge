@@ -1,0 +1,283 @@
+<div class="payone-csc-order"
+    data-select-items-message="${Resource.msg('csc.js.selectitems', 'payonebm', null)}"
+    data-select-items-capture-message="${Resource.msg('csc.js.selectitems.capture', 'payonebm', null)}"
+    data-select-items-refund-message="${Resource.msg('csc.js.selectitems.refund', 'payonebm', null)}"
+    data-invalid-quantity-message="${Resource.msg('csc.js.invalidquantity', 'payonebm', null)}"
+    data-whole-number-message="${Resource.msg('csc.js.wholenumber', 'payonebm', null)}"
+    data-quantity-below-minimum-message="${Resource.msg('csc.js.quantityminimum', 'payonebm', null)}"
+    data-quantity-exceeded-message="${Resource.msg('csc.js.quantityexceeded', 'payonebm', null)}"
+    data-invalid-amount-message="${Resource.msg('csc.js.invalidamount', 'payonebm', null)}"
+    data-amount-below-minimum-message="${Resource.msg('csc.js.amountminimum', 'payonebm', null)}"
+    data-amount-exceeded-message="${Resource.msg('csc.js.amountexceeded', 'payonebm', null)}"
+    data-invalid-cancel-reason-message="${Resource.msg('csc.js.invalidcancelreason', 'payonebm', null)}">
+    <link rel="stylesheet" href="${URLUtils.staticURL('/css/payoneCscOrder.css')}" />
+
+    <div class="payone-csc-loading is-hidden" id="payone-csc-loading" aria-hidden="true">
+        <div class="payone-csc-loading-backdrop"></div>
+        <div class="payone-csc-loading-content" role="status" aria-live="polite">
+            <div class="payone-csc-loading-spinner"></div>
+            <div class="payone-csc-loading-text">${Resource.msg('csc.js.loading', 'payonebm', null)}</div>
+        </div>
+    </div>
+
+    <div class="payone-csc-header">
+        <img class="payone-csc-logo" src="${URLUtils.staticURL('/images/payone-logo-horizontal.png')}" alt="PAYONE" />
+        <h2>${Resource.msg('csc.title', 'payonebm', null)}</h2>
+        <isif condition="${pdict.error.isPayoneAssociatedPayment}">
+            <p>${Resource.msg('csc.description', 'payonebm', null)}</p>
+        </isif>
+    </div>
+
+    <isif condition="${pdict.actionResult}">
+        <div class="payone-csc-message ${pdict.actionResult.error ? 'is-error' : 'is-success'}">
+            ${pdict.actionResult.message}
+        </div>
+    </isif>
+
+    <isif condition="${pdict.error.isError}">
+        <div class="payone-csc-message ${!pdict.error.isPayoneAssociatedPayment ? 'is-warning' : 'is-error'}">
+            ${pdict.error.message}
+        </div>
+    <iselse/>
+        <div class="payone-csc-summary">
+            <h3>${Resource.msg('csc.summary.title', 'payonebm', null)}</h3>
+            <div><strong>${Resource.msg('csc.summary.order', 'payonebm', null)}:</strong> ${pdict.orderNo}</div>
+            <div><strong>${Resource.msg('csc.summary.merchantreference', 'payonebm', null)}:</strong> <isif condition="${pdict.merchantReference}">${pdict.merchantReference}<iselse/>${Resource.msg('csc.summary.notavailable', 'payonebm', null)}</isif></div>
+            <div><strong>${Resource.msg('csc.summary.paymentmethod', 'payonebm', null)}:</strong> ${pdict.paymentMethod}</div>
+            <isif condition="${pdict.statusSummary}">
+                <div><strong>${Resource.msg('csc.summary.checkoutstatus', 'payonebm', null)}:</strong> ${pdict.statusSummary.checkoutStatus}</div>
+                <div><strong>${Resource.msg('csc.summary.paymentstatus', 'payonebm', null)}:</strong> ${pdict.statusSummary.paymentStatus}</div>
+                <div><strong>${Resource.msg('csc.summary.lastevent', 'payonebm', null)}:</strong> <isif condition="${pdict.statusSummary.eventLabel}">${pdict.statusSummary.eventLabel}<iselse/>${Resource.msg('csc.summary.notavailable', 'payonebm', null)}</isif></div>
+                <isif condition="${pdict.statusSummary.cancellationReason}">
+                    <div><strong>${Resource.msg('csc.summary.cancellationreason', 'payonebm', null)}:</strong> ${pdict.statusSummary.cancellationReason}</div>
+                </isif>
+                <div><strong>${Resource.msg('csc.summary.lasteventdate', 'payonebm', null)}:</strong> <isif condition="${pdict.statusSummary.eventDate}">${pdict.statusSummary.eventDate}<iselse/>${Resource.msg('csc.summary.notavailable', 'payonebm', null)}</isif></div>
+                <div><strong>${Resource.msg('csc.summary.capturedamount', 'payonebm', null)}:</strong> <isif condition="${pdict.orderLevelViewData && pdict.orderLevelViewData.capturedAmountFormatted}">${pdict.orderLevelViewData.capturedAmountFormatted}<iselse/>${Resource.msg('csc.summary.notavailable', 'payonebm', null)}</isif></div>
+                <div><strong>${Resource.msg('csc.summary.refundedamount', 'payonebm', null)}:</strong> <isif condition="${pdict.statusSummary.refundedAmountFormatted}">${pdict.statusSummary.refundedAmountFormatted}<iselse/>${pdict.statusSummary.refundedAmount}</isif></div>
+                <div><strong>${Resource.msg('csc.summary.collectedamount', 'payonebm', null)}:</strong> <isif condition="${pdict.statusSummary.collectedAmountFormatted}">${pdict.statusSummary.collectedAmountFormatted}<iselse/>${pdict.statusSummary.collectedAmount}</isif></div>
+                <div><strong>${Resource.msg('csc.summary.cancelledamount', 'payonebm', null)}:</strong> <isif condition="${pdict.statusSummary.cancelledAmountFormatted}">${pdict.statusSummary.cancelledAmountFormatted}<iselse/>${pdict.statusSummary.cancelledAmount}</isif></div>
+                <div><strong>${Resource.msg('csc.summary.commercecaseid', 'payonebm', null)}:</strong> ${pdict.identifiers.commerceCaseId}</div>
+                <div><strong>${Resource.msg('csc.summary.checkoutid', 'payonebm', null)}:</strong> ${pdict.identifiers.checkoutId}</div>
+                <div><strong>${Resource.msg('csc.summary.paymentexecutionid', 'payonebm', null)}:</strong> <isif condition="${pdict.identifiers.paymentExecutionId}">${pdict.identifiers.paymentExecutionId}<iselse/>${Resource.msg('csc.summary.notavailable', 'payonebm', null)}</isif></div>
+                <div><strong>${Resource.msg('csc.summary.allowedactions', 'payonebm', null)}:</strong> <isif condition="${pdict.statusSummary.allowedPaymentActionsText}">${pdict.statusSummary.allowedPaymentActionsText}<iselse/>${Resource.msg('csc.summary.notavailable', 'payonebm', null)}</isif></div>
+            </isif>
+        </div>
+
+        <isif condition="${pdict.itemLevelTrackingWarning}">
+            <div class="payone-csc-message is-warning">
+                ${pdict.itemLevelTrackingWarning}
+            </div>
+        </isif>
+
+        <isif condition="${pdict.showOperationTabs}">
+        <div class="payone-csc-tab-list" role="tablist">
+            <button type="button"
+                class="payone-csc-tab ${pdict.activeTab === 'item' ? 'is-active' : ''} ${!pdict.itemLevelActionsAvailable ? 'is-readonly' : ''}"
+                data-tab-target="item"
+                aria-selected="${pdict.activeTab === 'item' ? 'true' : 'false'}">
+                ${Resource.msg('csc.tabs.item', 'payonebm', null)}
+            </button>
+            <button type="button"
+                class="payone-csc-tab ${pdict.activeTab === 'order' ? 'is-active' : ''} ${!pdict.orderTabAvailable ? 'is-readonly' : ''}"
+                data-tab-target="order"
+                aria-selected="${pdict.activeTab === 'order' ? 'true' : 'false'}">
+                ${Resource.msg('csc.tabs.order', 'payonebm', null)}
+            </button>
+        </div>
+
+        <div class="payone-csc-tab-panel ${pdict.activeTab === 'item' ? 'is-active' : ''}" data-tab-panel="item" role="tabpanel">
+            <div class="payone-csc-items">
+                <p>${Resource.msg('csc.items.description', 'payonebm', null)}</p>
+
+                <isif condition="${pdict.items && pdict.items.length}">
+                    <table class="payone-csc-table">
+                        <thead>
+                            <tr>
+                                <th>${Resource.msg('csc.items.selectcapture', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.selectrefund', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.qtytoprocess', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.product', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.descriptionlabel', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.orderedqty', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.unitamount', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.totalamount', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.capturedqty', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.refundedqty', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.capturedamount', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.refundedamount', 'payonebm', null)}</th>
+                                <th>${Resource.msg('csc.items.collectedamount', 'payonebm', null)}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <isloop items="${pdict.items}" var="item">
+                                <tr>
+                                    <td class="payone-csc-action-cell" data-item-id="${item.id}" data-action="capture"><input type="checkbox" class="payone-csc-item-checkbox" data-item-id="${item.id}" data-action="capture" <isif condition="${!pdict.itemLevelActionsAvailable || item.isInformationalOnly || item.capturableQuantity < 1}">disabled="disabled"</isif> /></td>
+                                    <td class="payone-csc-action-cell" data-item-id="${item.id}" data-action="refund"><input type="checkbox" class="payone-csc-item-checkbox" data-item-id="${item.id}" data-action="refund" <isif condition="${!pdict.itemLevelActionsAvailable || item.isInformationalOnly || item.refundableQuantity < 1}">disabled="disabled"</isif> /></td>
+                                    <td>
+                                        <input type="number" class="payone-csc-item-quantity" data-item-id="${item.id}" data-capture-qty="${item.capturableQuantity}" data-refund-qty="${item.refundableQuantity}" data-default-process-qty="${item.initialProcessQuantity}" min="1" max="${item.initialProcessQuantity}" step="1" inputmode="numeric" value="${item.defaultProcessQuantity}" <isif condition="${!pdict.itemLevelActionsAvailable || item.isInformationalOnly || item.maxProcessQuantity < 1}">disabled="disabled"</isif> />
+                                        <div class="payone-csc-item-error is-hidden" data-item-id="${item.id}"></div>
+                                    </td>
+                                    <td>${item.productCode}</td>
+                                    <td>${item.description}</td>
+                                    <td>${item.quantityDisplay}</td>
+                                    <td class="${item.amountCellClass}">${item.unitAmount}</td>
+                                    <td class="${item.amountCellClass}">${item.totalAmount}</td>
+                                    <td class="${item.statusCellClass}" title="${item.statusCellTitle}">${item.capturedQuantityTableValue}</td>
+                                    <td class="${item.statusCellClass}" title="${item.statusCellTitle}">${item.refundedQuantityTableValue}</td>
+                                    <td class="${item.statusCellClass}" title="${item.statusCellTitle}">${item.capturedAmountTableValue}</td>
+                                    <td class="${item.statusCellClass}" title="${item.statusCellTitle}">${item.refundedAmountTableValue}</td>
+                                    <td class="${item.statusCellClass}" title="${item.statusCellTitle}">${item.collectedAmountTableValue}</td>
+                                </tr>
+                            </isloop>
+                        </tbody>
+                    </table>
+                    <div class="payone-csc-message is-error payone-csc-inline-error is-hidden" id="payone-csc-inline-error"></div>
+                <iselse/>
+                    <div class="payone-csc-no-actions">
+                        ${Resource.msg('csc.items.none', 'payonebm', null)}
+                    </div>
+                </isif>
+
+                <div class="payone-csc-actions payone-csc-actions-footer">
+                    <div class="payone-csc-actions-primary">
+                        <isif condition="${pdict.itemLevelCanCapture}">
+                            <form method="post" class="payone-csc-form" id="payone-csc-capture" action="${URLUtils.url('PayoneCSC-CustomerServiceCenter', 'orderNo', pdict.orderNo, 'capture', 'true', pdict.csrf.tokenName, pdict.csrf.token)}">
+                                <input type="hidden" name="actionScope" value="item" />
+                                <input type="hidden" name="selectedItems" value="" />
+                                <input type="submit" class="button payone-csc-button payone-csc-button-capture" value="${Resource.msg('csc.actions.capture', 'payonebm', null)}" />
+                            </form>
+                        </isif>
+
+                        <isif condition="${pdict.itemLevelCanRefund}">
+                            <form method="post" class="payone-csc-form" id="payone-csc-refund" action="${URLUtils.url('PayoneCSC-CustomerServiceCenter', 'orderNo', pdict.orderNo, 'refund', 'true', pdict.csrf.tokenName, pdict.csrf.token)}">
+                                <input type="hidden" name="actionScope" value="item" />
+                                <input type="hidden" name="selectedItems" value="" />
+                                <input type="submit" class="button payone-csc-button payone-csc-button-refund" value="${Resource.msg('csc.actions.refund', 'payonebm', null)}" />
+                            </form>
+                        </isif>
+
+                        <isif condition="${!pdict.itemLevelCanCapture && !pdict.itemLevelCanRefund}">
+                            <div class="payone-csc-no-actions">
+                                <isif condition="${pdict.itemLevelTrackingWarning}">${Resource.msg('csc.items.none', 'payonebm', null)}<iselseif condition="${pdict.itemLevelActionsDisabledMessage}"/>${pdict.itemLevelActionsDisabledMessage}<iselse/>${Resource.msg('csc.items.none', 'payonebm', null)}</isif>
+                            </div>
+                        </isif>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="payone-csc-tab-panel ${pdict.activeTab === 'order' ? 'is-active' : ''}" data-tab-panel="order" role="tabpanel">
+            <div class="payone-csc-items">
+                <isif condition="${!pdict.orderLevelAmountActionUsed && pdict.itemLevelActionsAvailable && (pdict.orderLevelCanCapture || pdict.orderLevelCanRefund)}">
+                    <div class="payone-csc-message is-warning">
+                        ${Resource.msg('csc.warning.orderleveldisablesitemlevel', 'payonebm', null)}
+                    </div>
+                </isif>
+
+                <p>${Resource.msg('csc.orderlevel.description', 'payonebm', null)}</p>
+
+                <isif condition="${pdict.orderLevelTrackingWarning}">
+                    <div class="payone-csc-message is-warning">
+                        ${pdict.orderLevelTrackingWarning}
+                    </div>
+                </isif>
+
+                <table class="payone-csc-table">
+                    <tbody>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.totalamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.totalAmountFormatted}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.capturedamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.capturedAmountFormatted}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.refundedamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.refundedAmountFormatted}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.collectedamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.collectedAmountFormatted}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.cancelledamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.cancelledAmountFormatted}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.capturableamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.capturableAmountFormatted}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${Resource.msg('csc.orderlevel.refundableamount', 'payonebm', null)}</strong></td>
+                            <td>${pdict.orderLevelViewData.refundableAmountFormatted}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="payone-csc-actions payone-csc-actions-footer">
+                    <div class="payone-csc-actions-primary">
+                        <isif condition="${pdict.orderLevelCanCapture}">
+                            <form method="post" class="payone-csc-form payone-csc-order-form" id="payone-csc-order-capture" action="${URLUtils.url('PayoneCSC-CustomerServiceCenter', 'orderNo', pdict.orderNo, 'capture', 'true', pdict.csrf.tokenName, pdict.csrf.token)}">
+                                <input type="hidden" name="actionScope" value="order" />
+                                <label class="payone-csc-order-amount-label" for="payone-csc-order-capture-amount">${Resource.msg('csc.orderlevel.captureinput', 'payonebm', null)}</label>
+                                <div class="payone-csc-order-amount-input-wrap" data-currency-symbol="${pdict.orderLevelViewData.currencySymbol}">
+                                    <input type="text" class="payone-csc-order-amount-input" id="payone-csc-order-capture-amount" name="orderAmount" inputmode="decimal" data-action="capture" data-max-amount="${pdict.orderLevelViewData.capturableAmount}" data-max-amount-display="${pdict.orderLevelViewData.capturableAmountFormatted}" />
+                                </div>
+                                <div class="payone-csc-order-field-error is-hidden"></div>
+                                <div class="payone-csc-order-amount-help">${Resource.msg('csc.orderlevel.maximum', 'payonebm', null)}: ${pdict.orderLevelViewData.capturableAmountFormatted}</div>
+                                <input type="submit" class="button payone-csc-button payone-csc-button-capture" value="${Resource.msg('csc.orderlevel.captureaction', 'payonebm', null)}" />
+                            </form>
+                        </isif>
+
+                        <isif condition="${pdict.orderLevelCanRefund}">
+                            <form method="post" class="payone-csc-form payone-csc-order-form" id="payone-csc-order-refund" action="${URLUtils.url('PayoneCSC-CustomerServiceCenter', 'orderNo', pdict.orderNo, 'refund', 'true', pdict.csrf.tokenName, pdict.csrf.token)}">
+                                <input type="hidden" name="actionScope" value="order" />
+                                <label class="payone-csc-order-amount-label" for="payone-csc-order-refund-amount">${Resource.msg('csc.orderlevel.refundinput', 'payonebm', null)}</label>
+                                <div class="payone-csc-order-amount-input-wrap" data-currency-symbol="${pdict.orderLevelViewData.currencySymbol}">
+                                    <input type="text" class="payone-csc-order-amount-input" id="payone-csc-order-refund-amount" name="orderAmount" inputmode="decimal" data-action="refund" data-max-amount="${pdict.orderLevelViewData.refundableAmount}" data-max-amount-display="${pdict.orderLevelViewData.refundableAmountFormatted}" />
+                                </div>
+                                <div class="payone-csc-order-field-error is-hidden"></div>
+                                <div class="payone-csc-order-amount-help">${Resource.msg('csc.orderlevel.maximum', 'payonebm', null)}: ${pdict.orderLevelViewData.refundableAmountFormatted}</div>
+                                <input type="submit" class="button payone-csc-button payone-csc-button-refund" value="${Resource.msg('csc.orderlevel.refundaction', 'payonebm', null)}" />
+                            </form>
+                        </isif>
+
+                        <isif condition="${!pdict.orderLevelCanCapture && !pdict.orderLevelCanRefund}">
+                            <div class="payone-csc-no-actions">
+                                ${Resource.msg('csc.orderlevel.none', 'payonebm', null)}
+                            </div>
+                        </isif>
+                    </div>
+
+                    <isif condition="${pdict.canCancel}">
+                        <div class="payone-csc-actions-secondary">
+                            <form method="post" class="payone-csc-form payone-csc-order-form" id="payone-csc-cancel-order" action="${URLUtils.url('PayoneCSC-CustomerServiceCenter', 'orderNo', pdict.orderNo, 'cancel', 'true', pdict.csrf.tokenName, pdict.csrf.token)}">
+                                <input type="hidden" name="actionScope" value="order" />
+                                <label class="payone-csc-order-amount-label" for="payone-csc-cancel-reason">${Resource.msg('csc.actions.cancel', 'payonebm', null)}</label>
+                                <select class="payone-csc-order-select" id="payone-csc-cancel-reason" name="cancellationReason">
+                                    <option value="" <isif condition="${empty(pdict.selectedCancelReason)}">selected="selected"</isif>>${Resource.msg('csc.orderlevel.cancelreasonplaceholder', 'payonebm', null)}</option>
+                                    <isloop items="${pdict.cancelReasonOptions}" var="cancelReasonOption">
+                                        <option value="${cancelReasonOption.value}" <isif condition="${pdict.selectedCancelReason === cancelReasonOption.value}">selected="selected"</isif>>${cancelReasonOption.label}</option>
+                                    </isloop>
+                                </select>
+                                <div class="payone-csc-order-field-error is-hidden"></div>
+                                <div class="payone-csc-order-amount-help">${Resource.msg('csc.orderlevel.cancelreasonhelp', 'payonebm', null)}</div>
+                                <input type="submit" class="button payone-csc-button payone-csc-button-cancel" value="${Resource.msg('csc.actions.cancel', 'payonebm', null)}" />
+                            </form>
+                        </div>
+                    </isif>
+                </div>
+            </div>
+        </div>
+        <iselse/>
+            <div class="payone-csc-no-actions">
+                ${pdict.noActionsMessage}
+            </div>
+        </isif>
+
+    </isif>
+</div>
+
+<script src="${URLUtils.staticURL('/js/payoneCscOrder.js')}"></script>

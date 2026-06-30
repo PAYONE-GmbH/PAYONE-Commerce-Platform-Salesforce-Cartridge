@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<iscontent type="text/html" charset="UTF-8"/>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+        <title>
+            <isprint value="${Resource.msgf('order.placed.subject', 'payoneEmail', null, pdict.orderNo)}" encoding="htmlcontent" />
+        </title>
+    </head>
+    <body>
+        <p>
+            <isprint value="${Resource.msgf('email.hello', 'payoneEmail', null, pdict.order.getCustomerName())}" encoding="htmlcontent" />
+        </p>
+        <p>
+            <isprint value="${Resource.msg('order.placed.yourorder', 'payoneEmail', null)}" encoding="htmlcontent" />
+            <strong>
+                <isprint value="${pdict.orderNo}" encoding="htmlcontent" />
+            </strong>
+            <isprint value="${Resource.msg('order.placed.text', 'payoneEmail', null)}" encoding="htmlcontent" />
+        </p>
+        <p>
+            <isprint value="${Resource.msg('order.placed.thankyou', 'payoneEmail', null)}" encoding="htmlcontent" />
+        </p>
+    </body>
+</html>

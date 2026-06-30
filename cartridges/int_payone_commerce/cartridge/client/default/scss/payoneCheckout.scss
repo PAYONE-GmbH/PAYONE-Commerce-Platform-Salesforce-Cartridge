@@ -1,0 +1,142 @@
+:root {
+  --payment-option-border-color: #ccc;
+  --payment-options-background-color: #fff;
+  --payment-option-selected-color: #0096d6;
+  --payment-option-selected-background-color: #e6f4fb;
+}
+
+.payment-option-wrapper {
+  > .veil {
+    z-index: 10000;
+  }
+
+  .payment-option-card {
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--payment-option-border-color);
+    border-radius: calc(0.1875rem - 1px);
+  }
+
+  .payment-option-part {
+    display: block;
+    background: var(--payment-options-background-color);
+    box-sizing: border-box;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .payment-option-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid var(--payment-option-border-color);
+    margin: 0;
+
+    &::after {
+      content: "\2713";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: var(--payment-option-selected-background-color);
+      color: var(--payment-option-selected-color);
+      font-size: 0.8rem;
+      font-weight: 700;
+      opacity: 0;
+      transform: scale(0.85);
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+  }
+
+  .payment-option-content {
+    display: none;
+  }
+
+  .payment-option-choice:checked ~ .payment-option-content {
+    display: block;
+  }
+
+  .payment-option-choice {
+    display: none;
+  }
+
+  .payment-option-card.active .payment-option-header::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .dw-apple-pay-button {
+    -webkit-appearance: -apple-pay-button;
+    -apple-pay-button-style: black;
+    -apple-pay-button-type: buy;
+    display: inline-block;
+    height: 2.5rem;
+    width: 100%;
+  }
+}
+
+#validate-payone-card {
+  display: none;
+}
+
+#payment-IFrame {
+  --payone-form-bg-color: #fff; // Background color of the entire form
+  --payone-form-margin-left: auto; // Outer margin of the form
+  --payone-form-margin-right: auto; // Outer margin of the form
+  --payone-field-bg-color: #fff; // Background color of input fields
+  --payone-field-border: 1px solid #ced4da; // CSS border for input fields
+  --payone-field-outline: #00a1e0 solid 1px; // CSS outline on focus/active
+  --payone-field-label-color: #000; // Label text color
+  --payone-field-placeholder-color: #495057; // Placeholder text color
+  --payone-field-text-color: #495057; // User-entered text color
+  --payone-field-error-code-color: #c00; // Validation error message color
+  --payone-font-family:
+    "Segoe UI",
+    roboto,
+    "Helvetica Neue",
+    arial,
+    "Noto Sans",
+    "Liberation Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji"; // Font family name
+
+  --payone-font-url: ; // URL of a custom or Google font
+  --payone-label-font-size: 1rem; // Text size for label
+  --payone-label-font-weight: normal; // Text weight for label
+  --payone-label-font-size-mobile: 1rem; // Text size for label on mobile
+  --payone-input-font-size: 1rem; // Text size for input
+  --payone-input-font-weight: normal; // Text weight for input
+  --payone-input-font-size-mobile: 1rem; // Text size for input on mobile
+  --payone-error-font-size: 0.875rem; // Text size for error message
+  --payone-error-font-weight: normal; // Text weight for error message
+  --payone-error-font-size-mobile: 0.875rem; // Text size for error message on mobile
+  --payone-btn-bg-color: #0096d6; // Submit button colors for background
+  --payone-btn-text-color: #fff; // Submit button colors for text
+  --payone-btn-border-color: #0096d6; // Submit button colors for border
+  --payone-separator-color: #8fa8c8; // "Or" separator styling
+  --payone-separator-text-color: #64748b; // "Or" separator styling
+  --payone-input-border-radius: 3px; // Input field border radius
+  --payone-input-border-color-default: #ced4da; // Border colors by state
+  --payone-input-border-color-success: #22c55e; // Border colors by state
+  --payone-input-border-color-error: #c00; // Border colors by state
+  --payone-input-focus-outline: #00a1e040; // Outline color when an input is focused
+  --payone-input-padding: 0.375rem 0.75rem; // Inner padding of input fields
+  --payone-icon-width: ; // Icon sizing
+  --payone-icon-padding-right: ; // Icon sizing
+  --payone-field-spacing-vertical: 0.25rem; // Gap between form elements
+  --payone-label-margin-bottom: ; // Per-element spacing
+  --payone-input-margin-bottom: 0.375rem; // Per-element spacing
+  --payone-error-margin-bottom: 0; // Per-element spacing
+  --payone-button-margin-bottom: ; // Per-element spacing
+  --payone-manual-entry-form-label-style: ; // Style for the "Manually enter your card details" label
+  --payone-checkbox-label-style: ; // Checkbox label font style
+  --payone-terms-text-style: ; // Terms text font style
+}

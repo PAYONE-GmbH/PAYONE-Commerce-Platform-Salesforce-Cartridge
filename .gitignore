@@ -1,0 +1,25 @@
+node_modules/
+cartridges/*/cartridge/static/**/js/
+cartridges/*/cartridge/static/**/css/
+
+coverage/
+npm-debug.log
+cartridges.zip
+.idea/
+dw.json
+sitegenesisdata/
+mobilefirstdata/
+storefrontdata/
+demo_data_sfra/
+demo_data_sfra.zip
+.DS_Store
+test/appium/webdriver/config.json
+.vscode
+.history
+*.iml
+.idea
+test/acceptance/report
+test/integration/config.json
+
+# Allai
+.allai/

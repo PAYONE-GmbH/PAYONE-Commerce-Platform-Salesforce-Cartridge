@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="payoneItemLevelStatuses">
+                <display-name xml:lang="x-default">PAYONE Item Level Statuses</display-name>
+                <description xml:lang="x-default">JSON snapshot of item-level PAYONE processing quantities keyed by product line item UUID. Stores captured, refunded, and cancelled counts for CSC safeguards.</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneOrderAmountActionUsed">
+                <display-name xml:lang="x-default">PAYONE Order Amount Action Used</display-name>
+                <description xml:lang="x-default">Indicates whether a PAYONE order-level amount action was already executed for CSC, which disables further item-level actions for the order.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneMerchantReference">
+                <display-name xml:lang="x-default">PAYONE Merchant Reference</display-name>
+                <description xml:lang="x-default">PAYONE order merchant reference shown in the PAYONE portal checkout list. Used to map webhook event to its specific order.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="PayoneOrderSettings">
+                <display-name xml:lang="x-default">Settings for PAYONE Order</display-name>
+                <attribute attribute-id="payoneItemLevelStatuses"/>
+                <attribute attribute-id="payoneOrderAmountActionUsed"/>
+                <attribute attribute-id="payoneMerchantReference"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

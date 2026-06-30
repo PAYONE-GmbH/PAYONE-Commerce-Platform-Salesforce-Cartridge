@@ -1,0 +1,6 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommerceCardForm}" scope="page"/>
+<input type="hidden" name="${paymentFields.tokenInformation.htmlName}" id="hostedCardForm" value="">
+<input type="hidden" name="${paymentFields.cardType.htmlName}" id="hostedCardType" value="">
+
+<div id="payment-IFrame"></div>
+<span id="validate-payone-card">Pay now</span>

@@ -1,0 +1,102 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommerceSecureInvoiceForm}" scope="page"/>
+<isset name="payoneCommerceCheckoutHelper" value="${require('*/cartridge/scripts/helpers/payoneCommerceCheckoutHelper')}" scope="page" />
+<isset name="dobOptions" value="${payoneCommerceCheckoutHelper.getDobOptions()}" scope="page" />
+
+<!-- Phone Number -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.secureInvoicePhoneNumber.mandatory === true}>required</isif>
+            ${paymentFields.secureInvoicePhoneNumber.htmlName}">
+            <label class="form-control-label" for="secureInvoicePhoneNumber">
+                ${Resource.msg(paymentFields.secureInvoicePhoneNumber.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control secureInvoicePhoneNumber"
+                       name="${paymentFields.secureInvoicePhoneNumber.htmlName}"
+                       id="secureInvoicePhoneNumber"
+                       value="${paymentFields.secureInvoicePhoneNumber.htmlValue}">
+                <div class="invalid-feedback" id="secureInvoicePhoneNumberInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DATE OF BIRTH – Select dropdowns -->
+<div class="row">
+
+    <div class="col-12 required form-group">
+        <label class="form-control-label">
+            ${Resource.msg('dateOfBirth','payoneCommerceForm',null)}
+        </label>
+    </div>
+
+    <!-- DAY -->
+    <div class="col-4">
+        <div class="form-group ${paymentFields.secureInvoiceBirthDay.htmlName}">
+            <div>
+                <select class="form-control secureInvoiceBirthDay"
+                        name="${paymentFields.secureInvoiceBirthDay.htmlName}"
+                        id="secureInvoiceBirthDay">
+                    <option value="">${Resource.msg(paymentFields.secureInvoiceBirthDay.label,'payoneCommerceForm',null)}</option>
+
+                    <isloop items="${dobOptions.days}" var="day">
+                        <option value="${day}"
+                            <isif condition="${paymentFields.secureInvoiceBirthDay.htmlValue == day}">selected</isif>>
+                            ${day}
+                        </option>
+                    </isloop>
+
+                </select>
+                <div class="invalid-feedback" id="secureInvoiceBirthDayInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MONTH -->
+    <div class="col-4">
+        <div class="form-group ${paymentFields.secureInvoiceBirthMonth.htmlName}">
+            <div>
+                <select class="form-control secureInvoiceBirthMonth"
+                        name="${paymentFields.secureInvoiceBirthMonth.htmlName}"
+                        id="secureInvoiceBirthMonth">
+                    <option value="">${Resource.msg(paymentFields.secureInvoiceBirthMonth.label,'payoneCommerceForm',null)}</option>
+
+                    <isloop items="${dobOptions.months}" var="month">
+                        <option value="${month}"
+                            <isif condition="${paymentFields.secureInvoiceBirthMonth.htmlValue == month}">selected</isif>>
+                            ${month}
+                        </option>
+                    </isloop>
+
+                </select>
+                <div class="invalid-feedback" id="secureInvoiceBirthMonthInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YEAR -->
+    <div class="col-4">
+        <div class="form-group ${paymentFields.secureInvoiceBirthYear.htmlName}">
+            <div>
+                <select class="form-control secureInvoiceBirthYear"
+                        name="${paymentFields.secureInvoiceBirthYear.htmlName}"
+                        id="secureInvoiceBirthYear">
+
+                    <option value="">${Resource.msg(paymentFields.secureInvoiceBirthYear.label,'payoneCommerceForm',null)}</option>
+
+                    <isloop items="${dobOptions.years}" var="year">
+                        <option value="${year}"
+                            <isif condition="${paymentFields.secureInvoiceBirthYear.htmlValue == year}">selected</isif>>
+                            ${year}
+                        </option>
+                    </isloop>
+
+                </select>
+                <div class="invalid-feedback" id="secureInvoiceBirthYearInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+    <isslot id="payone-secure-terms" context="global" description="" />
+</div>

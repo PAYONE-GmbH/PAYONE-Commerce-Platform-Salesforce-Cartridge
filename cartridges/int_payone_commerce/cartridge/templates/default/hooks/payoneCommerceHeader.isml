@@ -1,0 +1,4 @@
+<isset name="payoneCommerceCheckoutHelper" value="${require('*/cartridge/scripts/helpers/payoneCommerceCheckoutHelper')}" scope="page" />
+<isset name="fingerprintConfig" value="${payoneCommerceCheckoutHelper.getPaylaFingerprintConfig()}" scope="page"/>
+<link rel="stylesheet" href="${URLUtils.staticURL('/css/payoneCheckout.css')}" />
+<link id="paylaDcsCss" type="text/css" rel="stylesheet" href="${fingerprintConfig.cssUrl}" />

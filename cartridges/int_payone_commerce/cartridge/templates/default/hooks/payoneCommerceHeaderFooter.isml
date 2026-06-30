@@ -1,0 +1,14 @@
+<isset name="payoneCommerceCheckoutHelper" value="${require('*/cartridge/scripts/helpers/payoneCommerceCheckoutHelper')}" scope="page" />
+<isset name="fingerprintConfig" value="${payoneCommerceCheckoutHelper.getPaylaFingerprintConfig()}" scope="page"/>
+<script id="paylaDcs" src="${fingerprintConfig.jsUrl}"></script>
+
+
+<script>
+window.payoneCheckoutData = <isprint value="${JSON.stringify(payoneCommerceCheckoutHelper.getPayoneCheckoutData())}" encoding="off" />;
+window.payoneCheckoutErrorMessage = '<isprint value="${pdict.errorMessage || ''}" encoding="jshtml" />';
+if (window.paylaDcs && typeof window.paylaDcs.init === 'function') {
+    window.paylaDcsT = window.paylaDcs.init("${fingerprintConfig.environment}", "${fingerprintConfig.snippetToken}");
+}
+</script>
+
+<script defer src="${URLUtils.staticURL('/js/payoneCheckout.js')}"></script>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<extensions xmlns="http://www.demandware.com/xml/bmmodules/2007-12-11" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.demandware.com/xml/bmmodules/2007-12-11 bmext.xsd">
+    <menuitem id="order" site="true" type="CSC">
+        <name xml:lang="x-default">CSC Order</name>
+        <short_description xml:lang="x-default">Customer Service Center Order</short_description>
+        <description xml:lang="x-default">Customer Service Center Order</description>
+        <icon>images/payone-logo-square.png</icon>
+    </menuitem>
+
+    <menuaction id="custom_module_payone_order" menupath="order" type="CSC" site="true" position="1">
+        <name xml:lang="x-default">PAYONE</name>
+        <short_description xml:lang="x-default">PAYONE Customer Service Center</short_description>
+        <description xml:lang="x-default">PAYONE Customer Service Center</description>
+        <exec pipeline="PayoneCSC" node="CustomerServiceCenter"/>
+        <sub-pipelines>
+            <pipeline name="PayoneCSC" />
+        </sub-pipelines>
+        <parameters>
+            <parameter name="orderNo" value="/order_no"/>
+            <parameter name="capture" value="/capture"/>
+            <parameter name="refund" value="/refund"/>
+            <parameter name="cancel" value="/cancel"/>
+        </parameters>
+        <icon>images/payone-logo-square.png</icon>
+    </menuaction>
+</extensions>

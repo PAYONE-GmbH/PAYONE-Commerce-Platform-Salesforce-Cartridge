@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="PAYONE Process Webhook Events">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="PayoneProcessWebhookEventsChunk" type="custom.PayoneProcessWebhookEventsChunk" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="MaxItems">200</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2026-05-20Z</date-from>
+                    <start-time>04:00:00.000Z</start-time>
+                    <interval>5m</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+</jobs>

@@ -1,0 +1,3 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommerceGooglepayForm}" scope="page"/>
+<input type="hidden" name="${paymentFields.tokenInformation.htmlName}" id="googlePayForm" value="">
+<div id="google-pay-container"></div>

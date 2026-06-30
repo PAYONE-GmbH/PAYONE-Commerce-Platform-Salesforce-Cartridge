@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+    <field formid="tokenInformation" type="string" mandatory="false" />
+
+    <field formid="secureInstallmentIban"
+           label="label.input.secureInstallmentIban"
+           type="string"
+           mandatory="true"
+           binding="secureInstallmentIban"
+           max-length="34"
+           missing-error="payment.secureInstallmentIban.number.missing"
+           parse-error="error.message.required" />
+
+    <field formid="secureInstallmentPhoneNumber"
+           label="label.input.secureInstallmentPhoneNumber"
+           type="string"
+           mandatory="true"
+           binding="secureInstallmentPhoneNumber"
+           max-length="20"
+           missing-error="error.message.required"
+           parse-error="error.message.required" />
+
+    <field formid="secureInstallmentBirthDay"
+           label="label.input.secureInstallmentBirthDay"
+           type="integer"
+           mandatory="true"
+           min-value="1"
+           max-value="31"
+           missing-error="error.message.required" />
+
+    <field formid="secureInstallmentBirthMonth"
+           label="label.input.secureInstallmentBirthMonth"
+           type="integer"
+           mandatory="true"
+           min-value="1"
+           max-value="12"
+           missing-error="error.message.required" />
+
+    <field formid="secureInstallmentBirthYear"
+           label="label.input.secureInstallmentBirthYear"
+           type="integer"
+           mandatory="true"
+           min-value="1900"
+           max-value="2100"
+           missing-error="error.message.required" />
+
+</form>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="payoneApiKey">
+                <display-name xml:lang="x-default">Payone API Key</display-name>
+                <description xml:lang="x-default">The API Key generated in the PAYONE Merchant Portal.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneApiSecret">
+                <display-name xml:lang="x-default">Payone API Secret</display-name>
+                <description xml:lang="x-default">The API Secret generated in the PAYONE Merchant Portal.</description>
+                <type>password</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneEnabled">
+                <display-name xml:lang="x-default">Payone Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneEnvironment">
+                <display-name xml:lang="x-default">Payone Environment</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">Development</display>
+                        <value>development</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Production</display>
+                        <value>production</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneErrorCodeMappingOverride">
+                <display-name xml:lang="x-default">Payone Error Mapping Override</display-name>
+                <description xml:lang="x-default">Optional JSON object to override the default PAYONE error-code-to-message-key mapping. JSON keys must be PAYONE error codes (as strings), and JSON values must be keys from the payoneError.properties file or its localized versions, if available (for example payoneError_de_DE.properties). Example format: {"50305001":"payone.error.invalid_request","50090002":"payone.error.payment_declined","6000400":"payone.error.your_custom_error_message"}.</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneGoogleMerchantId">
+                <display-name xml:lang="x-default">Google Merchant ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>12345678901234567890</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneMerchantId">
+                <display-name xml:lang="x-default">Payone Merchant ID</display-name>
+                <description xml:lang="x-default">Your unique PAYONE Merchant ID, displayed in the top-right corner of the PAYONE Merchant Portal after login.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="payonePayPalMerchantId">
+                <display-name xml:lang="x-default">PayPal Merchant ID</display-name>
+                <description xml:lang="x-default">Merchant ID or merchant email that must be passed as merchant-id to the PayPal JavaScript SDK for PAYONE PayPal checkout.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>T4EGLC8RT8FTU</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payonePaylaId">
+                <display-name xml:lang="x-default">Payla Merchant ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>test-1</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneSepaCreditorId">
+                <display-name xml:lang="x-default">PAYONE SEPA Creditor ID</display-name>
+                <description xml:lang="x-default">Creditor identifier used when creating PAYONE SEPA direct debit mandates.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>DE98ZZZ09999999999</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneApplePayUseBillingAddressFromCheckoutForm">
+                <display-name xml:lang="x-default">PAYONE Apple Pay - Use Billing Address From Checkout Form</display-name>
+                <description xml:lang="x-default">Use the billing address from the Checkout form instead of the one provided by Apple Pay interface.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneApplePayUseShippingAddressFromCheckoutForm">
+                <display-name xml:lang="x-default">PAYONE Apple Pay - Use Shipping Address From Checkout Form</display-name>
+                <description xml:lang="x-default">Use the shipping address from the Checkout form instead of the one provided by Apple Pay interface.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneApplePayUseShippingMethodFromCheckoutForm">
+                <display-name xml:lang="x-default">PAYONE Apple Pay - Use Shipping Method From Checkout Form</display-name>
+                <description xml:lang="x-default">Use the shipping method from the Checkout form instead of the one provided by Apple Pay interface.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="payoneApplePayIntegrationType">
+                <display-name xml:lang="x-default">PAYONE Apple Pay - Integration Type</display-name>
+                <description xml:lang="x-default">MERCHANT_CERTIFICATE: Uses your own Apple Pay merchant certificate. MASS_ENABLEMENT: Uses the PAYONE certificate.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">MERCHANT_CERTIFICATE</display>
+                        <value>MERCHANT_CERTIFICATE</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">MASS_ENABLEMENT</display>
+                        <value>MASS_ENABLEMENT</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="payoneConfigurations">
+                <display-name xml:lang="x-default">PAYONE Configurations</display-name>
+                <attribute attribute-id="payoneEnabled"/>
+                <attribute attribute-id="payoneEnvironment"/>
+                <attribute attribute-id="payoneMerchantId"/>
+                <attribute attribute-id="payoneApiKey"/>
+                <attribute attribute-id="payoneApiSecret"/>
+                <attribute attribute-id="payoneSepaCreditorId"/>
+                <attribute attribute-id="payoneApplePayIntegrationType"/>
+                <attribute attribute-id="payoneApplePayUseShippingAddressFromCheckoutForm"/>
+                <attribute attribute-id="payoneApplePayUseBillingAddressFromCheckoutForm"/>
+                <attribute attribute-id="payoneApplePayUseShippingMethodFromCheckoutForm"/>
+                <attribute attribute-id="payonePaylaId"/>
+                <attribute attribute-id="payonePayPalMerchantId"/>
+                <attribute attribute-id="payoneGoogleMerchantId"/>
+                <attribute attribute-id="payoneErrorCodeMappingOverride"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+</metadata>

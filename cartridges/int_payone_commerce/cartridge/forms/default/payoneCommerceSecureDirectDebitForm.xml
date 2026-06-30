@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+    <field formid="secureDebitIban"
+           label="label.input.secureDebitIban"
+           type="string"
+           mandatory="true"
+           binding="secureDebitIban"
+           max-length="34"
+           missing-error="payment.secureDebitIban.number.missing"
+           parse-error="error.message.required" />
+
+    <field formid="secureDebitAccountHolder"
+           label="label.input.secureDebitAccountHolder"
+           type="string"
+           mandatory="true"
+           binding="secureDebitAccountHolder"
+           missing-error="error.message.required" />
+
+    <!-- Date of Birth fields -->
+    <field formid="secureDebitBirthDay"
+           label="label.input.secureDebitBirthDay"
+           type="integer"
+           mandatory="true"
+           min-value="1"
+           max-value="31"
+           missing-error="error.message.required" />
+
+    <field formid="secureDebitBirthMonth"
+           label="label.input.secureDebitBirthMonth"
+           type="integer"
+           mandatory="true"
+           min-value="1"
+           max-value="12"
+           missing-error="error.message.required" />
+
+    <field formid="secureDebitBirthYear"
+           label="label.input.secureDebitBirthYear"
+           type="integer"
+           mandatory="true"
+           min-value="1900"
+           max-value="2100"
+           missing-error="error.message.required" />
+
+</form>

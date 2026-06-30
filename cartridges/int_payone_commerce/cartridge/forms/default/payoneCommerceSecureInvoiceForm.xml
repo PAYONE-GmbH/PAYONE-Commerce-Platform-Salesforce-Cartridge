@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+    <!-- Phone Number -->
+    <field formid="secureInvoicePhoneNumber"
+           label="label.input.secureInvoicePhoneNumber"
+           type="string"
+           mandatory="true"
+           binding="secureInvoicePhoneNumber"
+           max-length="20"
+           missing-error="error.message.required"
+           parse-error="error.message.required" />
+
+    <!-- Date of Birth -->
+    <field formid="secureInvoiceBirthDay"
+           label="label.input.secureInvoiceBirthDay"
+           type="integer"
+           mandatory="true"
+           min-value="1"
+           max-value="31"
+           missing-error="error.message.required" />
+
+    <field formid="secureInvoiceBirthMonth"
+           label="label.input.secureInvoiceBirthMonth"
+           type="integer"
+           mandatory="true"
+           min-value="1"
+           max-value="12"
+           missing-error="error.message.required" />
+
+    <field formid="secureInvoiceBirthYear"
+           label="label.input.secureInvoiceBirthYear"
+           type="integer"
+           mandatory="true"
+           min-value="1900"
+           max-value="2100"
+           missing-error="error.message.required" />
+
+</form>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.demandware.com/xml/impex/library/2006-10-31" >
+
+    <content content-id="payoneTerms">
+        <display-name xml:lang="x-default">Payone Method Terms</display-name>
+        <online-flag>true</online-flag>
+        <searchable-flag>false</searchable-flag>
+        <page-attributes/>
+        <custom-attributes>
+            <custom-attribute attribute-id="body" xml:lang="de-DE">&lt;p class="checkout-note"&gt;&#13;
+  Mit Abschluss dieser Bestellung erkläre ich mich mit den &#13;
+  &lt;a href="https://legal.paylater.payone.com/de/terms-of-payment.html" target="_blank" rel="noopener noreferrer"&gt;&#13;
+    ergänzenden Zahlungsbedingungen&#13;
+  &lt;/a&gt; &#13;
+  und der Durchführung einer Risikoprüfung für die ausgewählte Zahlungsart einverstanden. &#13;
+  Den &#13;
+  &lt;a href="https://legal.paylater.payone.com/de/data-protection-payments.html" target="_blank" rel="noopener noreferrer"&gt;&#13;
+    ergänzenden Datenschutzhinweis&#13;
+  &lt;/a&gt; &#13;
+  habe ich zur Kenntnis genommen.&#13;
+&lt;/p&gt;</custom-attribute>
+            <custom-attribute attribute-id="body" xml:lang="x-default">&lt;p class="checkout-note"&gt;&#13;
+  By placing this order, I agree to the &#13;
+  &lt;a href="https://legal.paylater.payone.com/en/terms-of-payment.html" target="_blank" rel="noopener noreferrer"&gt;&#13;
+    supplementary payment terms&#13;
+  &lt;/a&gt; &#13;
+  and the performance of a risk assessment for the selected payment method. &#13;
+  I am aware of the &#13;
+  &lt;a href="https://legal.paylater.payone.com/en/data-protection-payments.html" target="_blank" rel="noopener noreferrer"&gt;&#13;
+    supplementary data protection notice&#13;
+  &lt;/a&gt;.&#13;
+&lt;/p&gt;</custom-attribute>
+        </custom-attributes>
+    </content>
+
+</library>

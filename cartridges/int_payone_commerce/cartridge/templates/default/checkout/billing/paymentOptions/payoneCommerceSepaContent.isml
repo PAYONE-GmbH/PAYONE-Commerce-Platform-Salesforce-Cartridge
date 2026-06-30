@@ -1,0 +1,72 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommerceSepaForm}" scope="page"/>
+
+<!-- SEPA Country -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.sepaCountry.mandatory === true}>required</isif>
+            ${paymentFields.sepaCountry.htmlName}">
+            <label class="form-control-label" for="sepaCountry">
+                ${Resource.msg(paymentFields.sepaCountry.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <select class="form-control sepaCountry"
+                        name="${paymentFields.sepaCountry.htmlName}"
+                        id="sepaCountry">
+                    <option value="">${Resource.msg('label.input.sepaCountry.select','payoneCommerceForm',null)}</option>
+
+                    <isloop items="${paymentFields.sepaCountry.options}" var="opt">
+                        <option value="${opt.value}"
+                            <isif condition="${paymentFields.sepaCountry.htmlValue == opt.value}">selected</isif>>
+                            ${Resource.msg(opt.label,'payoneCommerceForm',opt.label)}
+                        </option>
+                    </isloop>
+
+                </select>
+                <div class="invalid-feedback" id="sepaCountryInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- IBAN -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.sepaIban.mandatory === true}>required</isif>
+            ${paymentFields.sepaIban.htmlName}">
+            <label class="form-control-label" for="sepaIban">
+                ${Resource.msg(paymentFields.sepaIban.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control sepaIban"
+                       name="${paymentFields.sepaIban.htmlName}"
+                       id="sepaIban"
+                       value="${paymentFields.sepaIban.htmlValue}">
+                <div class="invalid-feedback" id="sepaIbanInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Holder -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.sepaAccountHolder.mandatory === true}>required</isif>
+            ${paymentFields.sepaAccountHolder.htmlName}">
+            <label class="form-control-label" for="sepaAccountHolder">
+                ${Resource.msg(paymentFields.sepaAccountHolder.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control sepaAccountHolder"
+                       name="${paymentFields.sepaAccountHolder.htmlName}"
+                       id="sepaAccountHolder"
+                       value="${paymentFields.sepaAccountHolder.htmlValue}">
+                <div class="invalid-feedback" id="sepaAccountHolderInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+<isset name="paymentFields" value="${pdict.forms.payoneCommerceSecureInstallmentForm}" scope="page"/>
+<isset name="payoneCommerceCheckoutHelper" value="${require('*/cartridge/scripts/helpers/payoneCommerceCheckoutHelper')}" scope="page" />
+<isset name="dobOptions" value="${payoneCommerceCheckoutHelper.getDobOptions()}" scope="page" />
+
+<input type="hidden" name="${paymentFields.tokenInformation.htmlName}" id="secureInstallmentForm" value="">
+
+<!-- IBAN -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.secureInstallmentIban.mandatory === true}>required</isif>
+            ${paymentFields.secureInstallmentIban.htmlName}">
+            <label class="form-control-label" for="secureInstallmentIban">
+                ${Resource.msg(paymentFields.secureInstallmentIban.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control secureInstallmentIban"
+                       name="${paymentFields.secureInstallmentIban.htmlName}"
+                       id="secureInstallmentIban"
+                       value="${paymentFields.secureInstallmentIban.htmlValue}">
+                <div class="invalid-feedback" id="secureInstallmentIbanInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Phone Number -->
+<div class="row">
+    <div class="col-12">
+        <div class="form-group
+            <isif condition=${paymentFields.secureInstallmentPhoneNumber.mandatory === true}>required</isif>
+            ${paymentFields.secureInstallmentPhoneNumber.htmlName}">
+            <label class="form-control-label" for="secureInstallmentPhoneNumber">
+                ${Resource.msg(paymentFields.secureInstallmentPhoneNumber.label,'payoneCommerceForm',null)}
+            </label>
+            <div>
+                <input type="text"
+                       class="form-control secureInstallmentPhoneNumber"
+                       name="${paymentFields.secureInstallmentPhoneNumber.htmlName}"
+                       id="secureInstallmentPhoneNumber"
+                       value="${paymentFields.secureInstallmentPhoneNumber.htmlValue}">
+                <div class="invalid-feedback" id="secureInstallmentPhoneNumberInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DATE OF BIRTH – Select dropdowns -->
+<div class="row">
+
+    <div class="col-12 required form-group">
+        <label class="form-control-label">
+            ${Resource.msg('dateOfBirth','payoneCommerceForm',null)}
+        </label>
+    </div>
+
+    <!-- DAY -->
+    <div class="col-4">
+        <div class="form-group
+            <isif condition=${paymentFields.secureInstallmentBirthDay.mandatory === true}>required</isif>
+            ${paymentFields.secureInstallmentBirthDay.htmlName}">
+             <div>
+                <select class="form-control secureInstallmentBirthDay"
+                        name="${paymentFields.secureInstallmentBirthDay.htmlName}"
+                        id="secureInstallmentBirthDay">
+                    <option value="">${Resource.msg(paymentFields.secureInstallmentBirthDay.label,'payoneCommerceForm',null)}</option>
+                    <isloop items="${dobOptions.days}" var="day">
+                        <option value="${day}"
+                            <isif condition="${paymentFields.secureInstallmentBirthDay.htmlValue == day}">selected</isif>>
+                            ${day}
+                        </option>
+                    </isloop>
+                </select>
+                <div class="invalid-feedback" id="secureInstallmentBirthDayInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MONTH -->
+    <div class="col-4">
+        <div class="form-group
+            <isif condition=${paymentFields.secureInstallmentBirthMonth.mandatory === true}>required</isif>
+            ${paymentFields.secureInstallmentBirthMonth.htmlName}">
+            <div>
+                <select class="form-control secureInstallmentBirthMonth"
+                        name="${paymentFields.secureInstallmentBirthMonth.htmlName}"
+                        id="secureInstallmentBirthMonth">
+                    <option value="">${Resource.msg(paymentFields.secureInstallmentBirthMonth.label,'payoneCommerceForm',null)}</option>
+                    <isloop items="${dobOptions.months}" var="month">
+                        <option value="${month}"
+                            <isif condition="${paymentFields.secureInstallmentBirthMonth.htmlValue == month}">selected</isif>>
+                            ${month}
+                        </option>
+                    </isloop>
+                </select>
+                <div class="invalid-feedback" id="secureInstallmentBirthMonthInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YEAR -->
+    <div class="col-4">
+        <div class="form-group
+            <isif condition=${paymentFields.secureInstallmentBirthYear.mandatory === true}>required</isif>
+            ${paymentFields.secureInstallmentBirthYear.htmlName}">
+            <div>
+                <select class="form-control secureInstallmentBirthYear"
+                        name="${paymentFields.secureInstallmentBirthYear.htmlName}"
+                        id="secureInstallmentBirthYear">
+
+                    <option value="">${Resource.msg(paymentFields.secureInstallmentBirthYear.label,'payoneCommerceForm',null)}</option>
+
+                    <isloop items="${dobOptions.years}" var="year">
+                        <option value="${year}"
+                            <isif condition="${paymentFields.secureInstallmentBirthYear.htmlValue == year}">selected</isif>>
+                            ${year}
+                        </option>
+                    </isloop>
+
+                </select>
+                <div class="invalid-feedback" id="secureInstallmentBirthYearInvalidMessage"></div>
+            </div>
+        </div>
+    </div>
+    <isslot id="payone-secure-terms" context="global" description="" />
+</div>
+
+<div class="row secure-installment-options-wrapper d-none">
+    <div class="col-12">
+        <div class="form-group required">
+            <label class="form-control-label secure-installment-options-label">
+                ${Resource.msg('label.secureInstallment.options','payoneCommerceForm',null)}
+            </label>
+            <div class="secure-installment-options"></div>
+            <div class="invalid-feedback secure-installment-options-error"></div>
+        </div>
+    </div>
+</div>

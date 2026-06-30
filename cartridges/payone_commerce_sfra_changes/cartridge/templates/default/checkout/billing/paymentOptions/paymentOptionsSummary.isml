@@ -1,0 +1,17 @@
+<div class="payment-details">
+    <isloop items="${pdict.order.billing.payment.selectedPaymentInstruments}" var="payment">
+        <isif condition="${payment.paymentMethod === 'CREDIT_CARD'}">
+            <isinclude template="checkout/billing/paymentOptions/creditCardSummary" />
+        <iscomment>Payone Modifications Start</iscomment>
+        <iselse/>
+            <isset name="paymentMethodLabel" value="${payment.paymentMethod}" scope="page" />
+            <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="method">
+                <isif condition="${method.ID === payment.paymentMethod}">
+                    <isset name="paymentMethodLabel" value="${method.name}" scope="page" />
+                </isif>
+            </isloop>
+            <span>${paymentMethodLabel}</span>
+            <iscomment>Payone Modifications End</iscomment>
+        </isif>
+    </isloop>
+</div>

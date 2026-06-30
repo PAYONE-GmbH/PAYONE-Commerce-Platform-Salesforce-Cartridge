@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+
+    <field formid="sepaIban"
+           label="label.input.sepaIban"
+           type="string"
+           mandatory="true"
+           binding="sepaIban"
+           max-length="34"
+           missing-error="payment.sepaIban.number.missing"
+           parse-error="error.message.required" />
+
+    <field formid="sepaAccountHolder"
+           label="label.input.sepaAccountHolder"
+           type="string"
+           mandatory="true"
+           binding="sepaAccountHolder"
+           missing-error="error.message.required" />
+
+<!-- SEPA Country  -->
+    <field formid="sepaCountry"
+           label="label.input.sepaCountry"
+           type="string"
+           mandatory="true"
+           binding="sepaCountry"
+           missing-error="error.message.required">
+
+        <options>
+
+            <!-- EU Member States (27) -->
+            <option optionid="AT" label="country.at" value="AT"/>
+            <option optionid="BE" label="country.be" value="BE"/>
+            <option optionid="BG" label="country.bg" value="BG"/>
+            <option optionid="HR" label="country.hr" value="HR"/>
+            <option optionid="CY" label="country.cy" value="CY"/>
+            <option optionid="CZ" label="country.cz" value="CZ"/>
+            <option optionid="DK" label="country.dk" value="DK"/>
+            <option optionid="EE" label="country.ee" value="EE"/>
+            <option optionid="FI" label="country.fi" value="FI"/>
+            <option optionid="FR" label="country.fr" value="FR"/>
+            <option optionid="DE" label="country.de" value="DE"/>
+            <option optionid="GR" label="country.gr" value="GR"/>
+            <option optionid="HU" label="country.hu" value="HU"/>
+            <option optionid="IE" label="country.ie" value="IE"/>
+            <option optionid="IT" label="country.it" value="IT"/>
+            <option optionid="LV" label="country.lv" value="LV"/>
+            <option optionid="LT" label="country.lt" value="LT"/>
+            <option optionid="LU" label="country.lu" value="LU"/>
+            <option optionid="MT" label="country.mt" value="MT"/>
+            <option optionid="NL" label="country.nl" value="NL"/>
+            <option optionid="PL" label="country.pl" value="PL"/>
+            <option optionid="PT" label="country.pt" value="PT"/>
+            <option optionid="RO" label="country.ro" value="RO"/>
+            <option optionid="SK" label="country.sk" value="SK"/>
+            <option optionid="SI" label="country.si" value="SI"/>
+            <option optionid="ES" label="country.es" value="ES"/>
+            <option optionid="SE" label="country.se" value="SE"/>
+
+            <!-- EEA Countries (3) -->
+            <option optionid="IS" label="country.is" value="IS"/>
+            <option optionid="NO" label="country.no" value="NO"/>
+            <option optionid="LI" label="country.li" value="LI"/>
+
+            <!-- Additional SEPA countries (11) -->
+            <option optionid="AL" label="country.al" value="AL"/>
+            <option optionid="AD" label="country.ad" value="AD"/>
+            <option optionid="MD" label="country.md" value="MD"/>
+            <option optionid="MC" label="country.mc" value="MC"/>
+            <option optionid="ME" label="country.me" value="ME"/>
+            <option optionid="MK" label="country.mk" value="MK"/>
+            <option optionid="SM" label="country.sm" value="SM"/>
+            <option optionid="RS" label="country.rs" value="RS"/>
+            <option optionid="CH" label="country.ch" value="CH"/>
+            <option optionid="GB" label="country.gb" value="GB"/>
+            <option optionid="VA" label="country.va" value="VA"/>
+
+        </options>
+
+    </field>
+</form>

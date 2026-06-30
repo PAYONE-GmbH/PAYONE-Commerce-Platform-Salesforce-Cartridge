@@ -1,0 +1,48 @@
+{
+    "hooks": [
+        {
+            "name": "app.template.htmlHead",
+            "script": "./hooks/payoneCommerceTemplateHooks"
+        },
+        {
+            "name": "app.template.afterFooter",
+            "script": "./hooks/payoneCommerceTemplateHooks"
+        },
+        {
+            "name": "app.payment.processor.payone_commerce",
+            "script": "./hooks/payment/processor/payone_commerce"
+        },
+        {
+            "name": "app.payment.form.processor.payone_commerce",
+            "script": "./hooks/payment/processor/payone_commerce_form_processor"
+        },
+        {
+            "name": "app.post.auth",
+            "script": "./hooks/payoneCommercePostAuthorization"
+        },
+        {
+            "name": "dw.extensions.applepay.getRequest",
+            "script": "./hooks/payoneCommerceApplePay"
+        },
+        {
+            "name": "dw.extensions.applepay.shippingContactSelected",
+            "script": "./hooks/payoneCommerceApplePay"
+        },
+        {
+            "name": "dw.extensions.applepay.paymentAuthorized.authorizeOrderPayment",
+            "script": "./hooks/payoneCommerceApplePay"
+        },
+        {
+            "name": "dw.extensions.applepay.paymentAuthorized.placeOrder",
+            "script": "./hooks/payoneCommerceApplePay"
+        },
+        {
+            "name": "dw.extensions.applepay.cancel",
+            "script": "./hooks/payoneCommerceApplePay"
+        },
+        {
+            "name": "dw.ocapi.shop.basket.payment_methods.modifyGETResponse",
+            "script": "./hooks/csc/basketPaymentMethods.js"
+        }
+    ]
+}

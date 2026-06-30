@@ -1,0 +1,27 @@
+<isset name="payoneCheckoutHelper" value="${require('*/cartridge/scripts/helpers/payoneCommerceCheckoutHelper')}"
+    scope="page" />
+<isset name="firstPaymentOption" value="${true}" scope="page" />
+<isset name="applicablePaymentMethods" value="${pdict.order.billing.payment.applicablePaymentMethods}" scope="page" />
+
+<div class="payment-option-wrapper">
+    <input type="hidden" name="payoneCommerceCheckout" value="true">
+    <isloop items="${applicablePaymentMethods}" var="paymentOption" status="paymentOptionStatus">
+        <isif condition="${payoneCheckoutHelper.optionPath[paymentOption.ID]}">
+            <div class="payment-option-card tab-pane ${firstPaymentOption ? 'active' : ''} ${paymentOption.ID}"
+                id="${paymentOption.ID}">
+                <div class="payment-form-fields">
+                    <input type="radio" ${firstPaymentOption ? 'checked="checked"' : ''}
+                        class="payment-option-choice hide" id="${paymentOption.ID + '_check'}"
+                        name="${pdict.forms.billingForm.paymentMethod.htmlName}" value="${paymentOption.ID}">
+                    <label class="payment-option-header payment-option-part"
+                        for="${paymentOption.ID + '_check'}">${paymentOption.name}</label>
+                    <div class="payment-option-content payment-option-part">
+                        <isinclude template="${payoneCheckoutHelper.optionPath[paymentOption.ID].content}" />
+                    </div>
+                </div>
+
+            </div>
+            <isset name="firstPaymentOption" value="${false}" scope="page" />
+        </isif>
+    </isloop>
+</div>
