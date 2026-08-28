@@ -22,6 +22,10 @@ var UNSUCCESSFUL_STATUSES = {
     REVERSED: true,
     CHARGEBACKED: true
 };
+var EVENT_STATUSES = {
+    SUCCESSFUL: SUCCESSFUL_EVENT_STATUSES,
+    UNSUCCESSFUL: UNSUCCESSFUL_STATUSES
+};
 
 /**
  * Resolves the target checkout from PAYONE create/get response variants.
@@ -271,10 +275,7 @@ module.exports = {
     getRedirectUrl: getRedirectUrl,
     isRejected: isRejected,
     isRedirected: isRedirected,
-    eventStatus: {
-        UNSUCCESSFUL: UNSUCCESSFUL_STATUSES,
-        SUCCESSFUL: SUCCESSFUL_EVENT_STATUSES
-    },
+    eventStatuses: EVENT_STATUSES,
     isSuccessfulPaymentEvent: isSuccessfulPaymentEvent,
     isSuccessfulPostRedirectState: isSuccessfulPostRedirectState
 };

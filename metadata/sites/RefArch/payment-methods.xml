@@ -97,4 +97,17 @@
         <processor-id>PAYONE_COMMERCE</processor-id>
     </payment-method>
 
+    <payment-method method-id="PAYONE_COMMERCE_WERO">
+        <name xml:lang="x-default">Payone Commerce Wero</name>
+        <enabled-flag>true</enabled-flag>
+        <processor-id>PAYONE_COMMERCE</processor-id>
+        <countries>
+            <country country-code="BE"/>
+            <country country-code="DE"/>
+        </countries>
+        <currencies>
+            <currency>EUR</currency>
+        </currencies>
+    </payment-method>
+
 </payment-settings>

@@ -669,7 +669,19 @@ server.get('PaypalReturn', server.middleware.https, function (req, res, next) {
     return next();
 });
 
-server.get('Card3DSReturn', server.middleware.https, payonePostRedirectOrderHelper.handlePostRedirectOrderConfirmation);
+server.get(
+    'PostRedirectReturn',
+    server.middleware.https,
+    csrfProtection.generateToken,
+    payonePostRedirectOrderHelper.handlePostRedirectOrderConfirmation
+);
+
+server.post(
+    'PostRedirectStatus',
+    server.middleware.https,
+    csrfProtection.validateAjaxRequest,
+    payonePostRedirectOrderHelper.handlePostRedirectOrderStatus
+);
 
 server.get(
     'PostRedirectOrderConfirm',

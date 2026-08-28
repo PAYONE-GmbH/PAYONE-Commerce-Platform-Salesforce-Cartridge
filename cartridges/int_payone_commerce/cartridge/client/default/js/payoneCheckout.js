@@ -1472,7 +1472,9 @@ function updatePaymentInformation(order) {
         var paymentMethod = order.billing.payment.applicablePaymentMethods.find(function (method) {
             return method.ID === selectedPaymentMethodId;
         })
-        htmlToAppend += '<span>' + paymentMethod.name || paymentMethod.ID + '</span>';
+        if (paymentMethod) {
+            htmlToAppend += '<span>' + (paymentMethod.name || paymentMethod.ID) + '</span>';
+        }
     }
 
     $paymentSummary.empty().append(htmlToAppend);

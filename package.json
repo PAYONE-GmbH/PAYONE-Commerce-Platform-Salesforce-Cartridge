@@ -1,6 +1,6 @@
 {
   "name": "pcp-salesforce-cartridge",
-  "version": "26.1.0",
+  "version": "26.2.0",
   "description": "PAYONE Commerce Platform Cartridge for Salesforce Commerce Cloud",
   "engines": {
     "node": ">=18"

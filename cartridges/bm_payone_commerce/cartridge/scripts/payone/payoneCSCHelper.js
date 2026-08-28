@@ -187,6 +187,50 @@ function saveItemLevelStatuses(order, itemLevelStatuses) {
 }
 
 /**
+ * Initializes local item quantities for a direct sale captured before CSC actions begin.
+ *
+ * @param {dw.order.Order|Object} order - Order carrying CSC local state.
+ * @param {Object} commerceCaseResult - Latest PAYONE commerce case response.
+ * @param {Object|null} statusSummary - PAYONE-derived CSC status summary.
+ * @returns {Object} Existing or initialized item-level status map.
+ */
+function initializeCapturedSaleItemStatuses(order, commerceCaseResult, statusSummary) {
+    var statuses = getStoredItemLevelStatuses(order);
+    var checkout;
+    var selectionMappings;
+
+    if (!order || Object.keys(statuses).length || !statusSummary ||
+        statusSummary.eventType !== 'SALE' || statusSummary.eventPaymentStatus !== 'CAPTURED') {
+        return statuses;
+    }
+
+    checkout = payoneCSCRequestBuilder.getCheckoutFromCommerceCaseResult(commerceCaseResult);
+    selectionMappings = payoneCSCRequestBuilder.buildCheckoutSelectionMappings(order, checkout);
+
+    selectionMappings.checkoutItems.forEach(function (checkoutItem, checkoutIndex) {
+        var details = checkoutItem && checkoutItem.orderLineDetails ? checkoutItem.orderLineDetails : {};
+        var selectionId = selectionMappings.selectionIdByCheckoutIndex[checkoutIndex];
+        var orderedQuantity = normalizeQuantity(details.quantity);
+
+        if (!selectionId || orderedQuantity < 1 || payoneCSCRequestBuilder.isInformationalOnlyCheckoutItem(checkoutItem)) {
+            return;
+        }
+
+        statuses[String(selectionId)] = {
+            captured: orderedQuantity,
+            refunded: 0,
+            cancelled: 0
+        };
+    });
+
+    if (Object.keys(statuses).length) {
+        saveItemLevelStatuses(order, statuses);
+    }
+
+    return statuses;
+}
+
+/**
  * Checks whether an order-level amount action was already performed for the order.
  *
  * @param {dw.order.Order|Object} order - Order carrying CSC local state.
@@ -1064,7 +1108,7 @@ function executeAction(orderNo, action, selectedItemsPayload, actionScope, order
     var itemLevelTrackingAvailable = hasCustomAttribute(order, ITEM_LEVEL_STATUS_ATTRIBUTE);
     var orderLevelTrackingAvailable = hasCustomAttribute(order, ORDER_AMOUNT_ACTION_USED_ATTRIBUTE);
     var orderLevelAmountActionUsed = isOrderLevelAmountActionUsed(order);
-    var itemLevelStatuses = getStoredItemLevelStatuses(order);
+    var itemLevelStatuses;
     var statusSummary = getStatusSummary(commerceCaseResult);
     var hasOrderLevelDiscount = payoneCSCRequestBuilder.hasOrderLevelDiscount(
         payoneCSCRequestBuilder.getCheckoutFromCommerceCaseResult(commerceCaseResult)
@@ -1078,6 +1122,10 @@ function executeAction(orderNo, action, selectedItemsPayload, actionScope, order
     var requestBody;
     var result;
     var refreshedStatus;
+
+    itemLevelStatuses = scope === 'item' && itemLevelTrackingAvailable && !orderLevelAmountActionUsed && !hasOrderLevelDiscount
+        ? initializeCapturedSaleItemStatuses(order, commerceCaseResult, statusSummary)
+        : getStoredItemLevelStatuses(order);
 
     if (!order) {
         return {
@@ -1353,6 +1401,9 @@ function buildViewData(orderNo, actionResult, activeTabScope, selectedCancelReas
     hasOrderLevelDiscount = payoneCSCRequestBuilder.hasOrderLevelDiscount(
         checkout
     );
+    if (itemLevelTrackingAvailable && !orderLevelAmountActionUsed && !hasOrderLevelDiscount) {
+        initializeCapturedSaleItemStatuses(order, commerceCaseResult, statusSummary);
+    }
     orderLevelViewData = buildOrderLevelViewData(order, commerceCaseResult, statusSummary);
     itemLevelActionsDisabledMessage = getItemLevelActionsDisabledMessage(
         itemLevelTrackingAvailable,

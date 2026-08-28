@@ -91,7 +91,7 @@ function updatePaymentTransactionStatus(paymentTransaction, checkout, paymentExe
 }
 
 /**
- * Clears transient PAYONE card 3DS redirect state once the return flow has ended.
+ * Clears transient PAYONE post-redirect state once the return flow has ended.
  *
  * @param {dw.order.PaymentTransaction|Object} paymentTransaction - Payment transaction to update.
  * @returns {void}
@@ -104,10 +104,10 @@ function clearRedirectState(paymentTransaction) {
     Transaction.wrap(function () {
         try {
             paymentTransaction.custom.payoneRedirectUrl = null;
-            paymentTransaction.custom.payoneCard3DSReturnNonce = null;
+            paymentTransaction.custom.payonePostRedirectReturnNonce = null;
         } catch (e) {
             LOGGER.error(
-                'PAYONE card 3DS redirect state could not be cleared from payment transaction. Error: {0}. Stack: {1}',
+                'PAYONE post-redirect state could not be cleared from payment transaction. Error: {0}. Stack: {1}',
                 e.message,
                 e.stack
             );
@@ -116,14 +116,14 @@ function clearRedirectState(paymentTransaction) {
 }
 
 /**
- * Validates the nonce returned from the PAYONE card 3DS redirect against the stored payment attempt value.
+ * Validates the nonce returned from PAYONE against the stored post-redirect payment attempt value.
  *
  * @param {dw.order.PaymentTransaction|Object} paymentTransaction - Payment transaction containing the stored nonce.
  * @param {string} providedNonce - Nonce returned in the shopper request.
  * @returns {boolean} True when the nonce matches the stored payment attempt.
  */
 function isValidReturnNonce(paymentTransaction, providedNonce) {
-    var storedNonce = readCustomAttribute(paymentTransaction, 'payoneCard3DSReturnNonce');
+    var storedNonce = readCustomAttribute(paymentTransaction, 'payonePostRedirectReturnNonce');
 
     return !!(storedNonce && providedNonce && storedNonce === providedNonce);
 }
