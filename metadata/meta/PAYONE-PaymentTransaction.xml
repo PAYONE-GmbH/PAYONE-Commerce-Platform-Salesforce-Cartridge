@@ -58,9 +58,9 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
-            <attribute-definition attribute-id="payoneCard3DSReturnNonce">
-                <display-name xml:lang="x-default">PAYONE Card 3DS Return Nonce</display-name>
-                <description xml:lang="x-default">Random value stored for a PAYONE card 3DS payment attempt and checked when the shopper returns to SFCC after the 3DS step.</description>
+            <attribute-definition attribute-id="payonePostRedirectReturnNonce">
+                <display-name xml:lang="x-default">PAYONE Post-Redirect Return Nonce</display-name>
+                <description xml:lang="x-default">Random value stored for a PAYONE post-redirect payment attempt and checked when the shopper returns to SFCC.</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -77,7 +77,7 @@
                 <attribute attribute-id="payoneCheckoutPaymentStatus"/>
                 <attribute attribute-id="payoneLatestPaymentEventStatus"/>
                 <attribute attribute-id="payoneRedirectUrl"/>
-                <attribute attribute-id="payoneCard3DSReturnNonce"/>
+                <attribute attribute-id="payonePostRedirectReturnNonce"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

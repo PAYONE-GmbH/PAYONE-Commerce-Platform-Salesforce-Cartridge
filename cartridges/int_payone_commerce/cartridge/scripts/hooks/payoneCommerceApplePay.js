@@ -121,9 +121,9 @@ exports.placeOrder = function (order) {
     var paymentInstruments = order.getPaymentInstruments();
     var paymentInstrument = paymentInstruments.length ? paymentInstruments[0] : null;
 
-    var cardReturnNonce = payoneCheckoutAuthorizationHelper.ensureCard3DSReturnNonce(paymentInstrument) || "";
+    var postRedirectReturnNonce = payoneCheckoutAuthorizationHelper.ensurePostRedirectReturnNonce(paymentInstrument) || "";
 
-    return new ApplePayHookResult(new Status(Status.OK), URLUtils.url('PayoneCommerce-OrderConfirm', 'orderNo', order.orderNo, 'nonce', cardReturnNonce));
+    return new ApplePayHookResult(new Status(Status.OK), URLUtils.url('PayoneCommerce-OrderConfirm', 'orderNo', order.orderNo, 'nonce', postRedirectReturnNonce));
 };
 
 /**

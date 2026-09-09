@@ -26,6 +26,7 @@ var payoneMerchantReferenceHelper = require('*/cartridge/scripts/payone/payoneMe
 var parseJson = PayoneCommonUtils.parseJson;
 var readCustomAttribute = PayoneCommonUtils.readCustomAttribute;
 var STORE_PAY_PAYMENT_METHOD_ID = 'PAYONE_COMMERCE_STORE_PAY';
+var WERO_PAYMENT_PRODUCT_ID = 900;
 var LOGGER = Logger.getLogger('payone', 'checkout');
 
 /**
@@ -257,11 +258,11 @@ function buildPaymentMethodSpecificInput(paymentInstrument) {
 }
 
 /**
- * Generates a cryptographically strong URL-safe return token for the PAYONE card 3DS roundtrip.
+ * Generates a cryptographically strong URL-safe token for a PAYONE post-redirect return.
  *
  * @returns {string} Random URL-safe token.
  */
-function generateCard3DSReturnNonce() {
+function generatePostRedirectReturnNonce() {
     var secureRandom = new SecureRandom();
     var randomBytes = secureRandom.nextBytes(12);
 
@@ -269,14 +270,14 @@ function generateCard3DSReturnNonce() {
 }
 
 /**
- * Ensures the current payment attempt has a stored nonce for the PAYONE card 3DS return flow.
+ * Ensures the current payment attempt has a stored nonce for the PAYONE post-redirect return flow.
  *
  * @param {dw.order.PaymentInstrument|Object} paymentInstrument - Payment instrument for the current order.
  * @returns {string|null} Existing or newly generated return nonce.
  */
-function ensureCard3DSReturnNonce(paymentInstrument) {
+function ensurePostRedirectReturnNonce(paymentInstrument) {
     var paymentTransaction = paymentInstrument && paymentInstrument.paymentTransaction;
-    var existingNonce = readCustomAttribute(paymentTransaction, 'payoneCard3DSReturnNonce');
+    var existingNonce = readCustomAttribute(paymentTransaction, 'payonePostRedirectReturnNonce');
     var createdNonce = null;
 
     if (existingNonce) {
@@ -287,14 +288,14 @@ function ensureCard3DSReturnNonce(paymentInstrument) {
         return null;
     }
 
-    createdNonce = generateCard3DSReturnNonce();
+    createdNonce = generatePostRedirectReturnNonce();
 
     Transaction.wrap(function () {
         try {
-            paymentTransaction.custom.payoneCard3DSReturnNonce = createdNonce;
+            paymentTransaction.custom.payonePostRedirectReturnNonce = createdNonce;
         } catch (e) {
             LOGGER.error(
-                'PAYONE card 3DS return nonce could not be saved on payment transaction. Error: {0}. Stack: {1}',
+                'PAYONE post-redirect return nonce could not be saved on payment transaction. Error: {0}. Stack: {1}',
                 e.message,
                 e.stack
             );
@@ -306,7 +307,7 @@ function ensureCard3DSReturnNonce(paymentInstrument) {
 }
 
 /**
- * Builds the PAYONE card 3DS return URL for the current order and payment attempt.
+ * Builds the PAYONE post-redirect return URL for the current order and payment attempt.
  *
  * @param {dw.order.Order|Object} order - Order being authorized.
  * @param {dw.order.PaymentInstrument|Object} paymentInstrument - Payment instrument for the current order.
@@ -314,17 +315,17 @@ function ensureCard3DSReturnNonce(paymentInstrument) {
  */
 function buildReturnUrl(order, paymentInstrument) {
     var orderNo = order && order.orderNo ? order.orderNo : null;
-    var card3DSReturnNonce = ensureCard3DSReturnNonce(paymentInstrument);
+    var postRedirectReturnNonce = ensurePostRedirectReturnNonce(paymentInstrument);
     var returnUrl;
 
     if (!orderNo) {
-        LOGGER.error('PAYONE card 3DS return URL could not be built because the order number is missing.');
+        LOGGER.error('PAYONE post-redirect return URL could not be built because the order number is missing.');
         return null;
     }
 
-    if (!card3DSReturnNonce) {
+    if (!postRedirectReturnNonce) {
         LOGGER.error(
-            'PAYONE card 3DS return URL could not be built for order {0} because no return nonce is available.',
+            'PAYONE post-redirect return URL could not be built for order {0} because no return nonce is available.',
             orderNo
         );
         return null;
@@ -332,15 +333,15 @@ function buildReturnUrl(order, paymentInstrument) {
 
     try {
         returnUrl = URLUtils.https(
-            'PayoneCommerce-Card3DSReturn',
+            'PayoneCommerce-PostRedirectReturn',
             'orderNo',
             orderNo,
             'nonce',
-            card3DSReturnNonce
+            postRedirectReturnNonce
         ).toString();
     } catch (e) {
         LOGGER.error(
-            'PAYONE card 3DS return URL could not be built for order {0}. Error: {1}. Stack: {2}',
+            'PAYONE post-redirect return URL could not be built for order {0}. Error: {1}. Stack: {2}',
             orderNo,
             e.message,
             e.stack
@@ -350,7 +351,7 @@ function buildReturnUrl(order, paymentInstrument) {
 
     if (!returnUrl || returnUrl.indexOf('https://') !== 0) {
         LOGGER.error(
-            'PAYONE card 3DS return URL is invalid for order {0}. Built URL: {1}',
+            'PAYONE post-redirect return URL is invalid for order {0}. Built URL: {1}',
             orderNo,
             returnUrl || 'empty'
         );
@@ -386,7 +387,7 @@ function getCardholderName(order) {
 }
 
 /**
- * Enriches card-specific PAYONE input with transaction channel, return URL, and cardholder name.
+ * Enriches PAYONE input with payment-method data required at order authorization time.
  *
  * @param {dw.order.Order|Object} order - Order being authorized.
  * @param {dw.order.PaymentInstrument|Object} paymentInstrument - Payment instrument for the current order.
@@ -397,6 +398,7 @@ function enrichPaymentMethodSpecificInput(order, paymentInstrument, paymentMetho
     var enrichedInput;
     var cardInput;
     var mobileInput;
+    var redirectInput;
     var cardholderName;
     var returnUrl;
     var sepaInput;
@@ -409,7 +411,8 @@ function enrichPaymentMethodSpecificInput(order, paymentInstrument, paymentMetho
 
     if (!paymentMethodSpecificInput.cardPaymentMethodSpecificInput
         && !paymentMethodSpecificInput.sepaDirectDebitPaymentMethodSpecificInput
-        && !paymentMethodSpecificInput.mobilePaymentMethodSpecificInput) {
+        && !paymentMethodSpecificInput.mobilePaymentMethodSpecificInput
+        && !paymentMethodSpecificInput.redirectPaymentMethodSpecificInput) {
         return paymentMethodSpecificInput;
     }
 
@@ -481,6 +484,25 @@ function enrichPaymentMethodSpecificInput(order, paymentInstrument, paymentMetho
 
         if (!mandate.creditorId) {
             mandate.creditorId = creditorId;
+        }
+    }
+
+    if (enrichedInput.redirectPaymentMethodSpecificInput
+        && enrichedInput.redirectPaymentMethodSpecificInput.paymentProductId === WERO_PAYMENT_PRODUCT_ID) {
+        redirectInput = enrichedInput.redirectPaymentMethodSpecificInput;
+        returnUrl = buildReturnUrl(order, paymentInstrument);
+        redirectInput.redirectionData = redirectInput.redirectionData || {};
+
+        if (returnUrl && !redirectInput.redirectionData.returnUrl) {
+            redirectInput.redirectionData.returnUrl = returnUrl;
+        }
+
+        if (!redirectInput.redirectionData.returnUrl) {
+            LOGGER.error(
+                'PAYONE Wero payment input for order {0} is missing redirectionData.returnUrl.',
+                order && order.orderNo ? order.orderNo : 'unknown'
+            );
+            return null;
         }
     }
 
@@ -1280,5 +1302,5 @@ module.exports = {
     buildPaymentMethodSpecificInput: buildPaymentMethodSpecificInput,
     buildReturnUrl: buildReturnUrl,
     enrichPaymentMethodSpecificInput: enrichPaymentMethodSpecificInput,
-    ensureCard3DSReturnNonce: ensureCard3DSReturnNonce
+    ensurePostRedirectReturnNonce: ensurePostRedirectReturnNonce
 };

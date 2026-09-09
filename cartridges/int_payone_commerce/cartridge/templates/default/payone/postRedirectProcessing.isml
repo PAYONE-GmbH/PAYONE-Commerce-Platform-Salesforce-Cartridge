@@ -1,0 +1,42 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+<isinclude template="/components/modules" sf-toolkit="off" />
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addCss('/css/payonePostRedirectProcessing.css');
+    assets.addJs('/js/payonePostRedirectProcessing.js');
+</isscript>
+<!DOCTYPE html>
+<html lang="${require('dw/util/Locale').getLocale(request.getLocale()).getLanguage()}">
+    <head>
+        <isinclude sf-toolkit="off" template="/common/scripts" />
+        <isinclude template="/common/htmlHead" />
+    </head>
+    <body class="payone-processing-page">
+    <section class="payone-post-redirect-processing"
+        data-status-url="${pdict.postRedirect.statusUrl}"
+        data-order-no="${pdict.postRedirect.orderNo}"
+        data-nonce="${pdict.postRedirect.nonce}"
+        data-csrf-name="${pdict.csrf.tokenName}"
+        data-csrf-token="${pdict.csrf.token}">
+        <div class="payone-processing-content" role="status" aria-live="polite">
+            <img class="payone-processing-logo"
+                src="${URLUtils.staticURL('/images/payone-logo-horizontal.png')}"
+                alt="PAYONE" />
+            <div class="payone-processing-spinner" aria-hidden="true"></div>
+            <h1>${Resource.msg('heading', 'payonePostRedirect', null)}</h1>
+            <p class="payone-processing-message" data-message="initial">
+                ${Resource.msg('message.initial', 'payonePostRedirect', null)}
+            </p>
+            <p class="payone-processing-message d-none" data-message="delayed">
+                ${Resource.msg('message.delayed', 'payonePostRedirect', null)}
+            </p>
+            <p class="payone-processing-message d-none" data-message="error">
+                ${Resource.msg('message.error', 'payonePostRedirect', null)}
+            </p>
+            <button class="btn btn-outline-primary d-none" type="button" data-action="retry">
+                ${Resource.msg('action.retry', 'payonePostRedirect', null)}
+            </button>
+        </div>
+    </section>
+    </body>
+</html>

@@ -10,7 +10,7 @@ var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 
 var webhookUtils = require('*/cartridge/scripts/helpers/payoneWebhookUtils');
 var emailHelpers = require('*/cartridge/scripts/helpers/emailHelpers');
-var payoneCheckoutStateHelper = require('*/cartridge/scripts/payone/payoneCheckoutStateHelper').eventStatus;
+var payoneEventStatuses = require('*/cartridge/scripts/payone/payoneCheckoutStateHelper').eventStatuses;
 
 var WEBHOOK_LOGGER = Logger.getLogger('payone', 'webhook');
 
@@ -124,14 +124,14 @@ function sendOrderStatusEmail(order, template, subject) {
 *
 * @param {dw.order.Order} order - The order object to process.
 * @param {string} eventId - The unique identifier for the webhook event.
-* @param {string} paymentStatus - The payment status, expected values: 'PENDING_PAYMENT' or 'PENDING_COMPLETION'.
+* @param {string} paymentStatus - Normalized PAYONE payment status.
 * @returns {string} - Returns 'PLACED' if the order was placed, 'FAILED' if the order was failed, or 'NO_ACTION' if no action was taken.
 * @throws {Error} - Throws an error if placing or failing the order fails.
 */
 function executeCreatedOrderPaymentFlow(order, eventId, paymentStatus) {
     var placeOrFailStatus;
 
-    if (payoneCheckoutStateHelper.SUCCESSFUL[paymentStatus]) {
+    if (payoneEventStatuses.SUCCESSFUL[paymentStatus]) {
         placeOrFailStatus = Transaction.wrap(function () {
             return OrderMgr.placeOrder(order);
         });
@@ -144,7 +144,7 @@ function executeCreatedOrderPaymentFlow(order, eventId, paymentStatus) {
         return 'PLACED';
     }
 
-    if (payoneCheckoutStateHelper.UNSUCCESSFUL[paymentStatus]) {
+    if (payoneEventStatuses.UNSUCCESSFUL[paymentStatus]) {
         placeOrFailStatus = Transaction.wrap(function () {
             return OrderMgr.failOrder(order, false);
         });

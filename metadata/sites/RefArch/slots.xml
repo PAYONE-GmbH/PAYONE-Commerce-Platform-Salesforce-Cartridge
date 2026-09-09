@@ -11,6 +11,17 @@
         </content>
     </slot-configuration>
 
+    <slot-configuration slot-id="payone-wero" context="global" configuration-id="Payone Wero Message" default="true" assigned-to-site="true">
+        <template>slots/html/htmlSlotContainer.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html>
+                <body xml:lang="x-default">You will be redirected to Wero to complete your payment.</body>
+                <body xml:lang="de-DE">Sie werden zu Wero weitergeleitet, um Ihre Zahlung abzuschließen.</body>
+            </html>
+        </content>
+    </slot-configuration>
+
     <slot-configuration slot-id="payone-secure-terms" context="global" configuration-id="Payone Terms" default="true" assigned-to-site="true">
         <template>slots/content/contentAssetBody.isml</template>
         <enabled-flag>true</enabled-flag>

@@ -28,7 +28,7 @@ function isCurrentCustomerOrder(req, order) {
 }
 
 /**
- * Stores the finalized 3DS order lookup data in the current session so the confirmation page can be refreshed safely.
+ * Stores the finalized post-redirect order lookup data in the current session so the confirmation page can be refreshed safely.
  *
  * @param {Object} req - Current request.
  * @param {dw.order.Order} order - Finalized order.
@@ -44,7 +44,7 @@ function storePostRedirectConfirmationOrder(req, order) {
 }
 
 /**
- * Returns the finalized 3DS order number stored for the current session.
+ * Returns the finalized post-redirect order number stored for the current session.
  *
  * @param {Object} req - Current request.
  * @returns {string|null} Stored order number or null.
@@ -58,7 +58,7 @@ function getPostRedirectConfirmationOrderNo(req) {
 }
 
 /**
- * Returns the finalized 3DS order token stored for the current session.
+ * Returns the finalized post-redirect order token stored for the current session.
  *
  * @param {Object} req - Current request.
  * @returns {string|null} Stored order token or null.
@@ -72,7 +72,7 @@ function getPostRedirectConfirmationOrderToken(req) {
 }
 
 /**
- * Returns the finalized 3DS order stored for the current session using SFCC's token-protected lookup.
+ * Returns the finalized post-redirect order stored for the current session using SFCC's token-protected lookup.
  *
  * @param {Object} req - Current request.
  * @returns {dw.order.Order|null} Stored order or null.
@@ -85,7 +85,7 @@ function getPostRedirectConfirmationOrder(req) {
 }
 
 /**
- * Indicates whether the order is the finalized 3DS order stored for this session.
+ * Indicates whether the order is the finalized post-redirect order stored for this session.
  *
  * @param {Object} req - Current request.
  * @param {dw.order.Order} order - Order to check.
@@ -130,16 +130,14 @@ function renderConfirmation(order, req, res) {
 }
 
 /**
- * Handles the PAYONE return from a post-redirect payment flow and finalizes the SFCC order when possible.
+ * Resolves and applies the latest PAYONE post-redirect payment state.
  *
  * @param {Object} req - Current request.
- * @param {Object} res - Current response.
- * @param {Function} next - Next middleware function.
- * @returns {Object} Result of next().
+ * @param {string} orderNo - SFCC order number.
+ * @param {string} returnNonce - Post-redirect return nonce.
+ * @returns {{status:string, redirectUrl:(string|null), message:(string|null)}} Resolution result.
  */
-function handlePostRedirectOrderConfirmation(req, res, next) {
-    var orderNo = req.querystring.orderNo;
-    var returnNonce = req.querystring.nonce;
+function resolvePostRedirectOrder(req, orderNo, returnNonce) {
     var order;
     var paymentInstrument;
     var paymentTransaction;
@@ -150,26 +148,21 @@ function handlePostRedirectOrderConfirmation(req, res, next) {
     var checkout;
 
     if (!orderNo || !returnNonce) {
-        res.render('/error', {
+        return {
+            status: 'error',
+            redirectUrl: null,
             message: Resource.msg('error.confirmation.error', 'confirmation', null)
-        });
-        return next();
+        };
     }
 
     order = OrderMgr.getOrder(orderNo);
 
-    if (!order) {
-        res.render('/error', {
+    if (!order || !isCurrentCustomerOrder(req, order)) {
+        return {
+            status: 'error',
+            redirectUrl: null,
             message: Resource.msg('error.confirmation.error', 'confirmation', null)
-        });
-        return next();
-    }
-
-    if (!isCurrentCustomerOrder(req, order)) {
-        res.render('/error', {
-            message: Resource.msg('error.confirmation.error', 'confirmation', null)
-        });
-        return next();
+        };
     }
 
     paymentInstrument = payoneCard3DSHelper.getPayonePaymentInstrument(order);
@@ -180,32 +173,38 @@ function handlePostRedirectOrderConfirmation(req, res, next) {
 
     if (!paymentInstrument || !commerceCaseId || !payoneCard3DSHelper.isValidReturnNonce(paymentTransaction, returnNonce)) {
         if (isStoredPostRedirectConfirmationOrder(req, order)) {
-            res.redirect(URLUtils.url('PayoneCommerce-PostRedirectOrderConfirm').toString());
-            return next();
+            return {
+                status: 'success',
+                redirectUrl: URLUtils.url('PayoneCommerce-PostRedirectOrderConfirm').toString(),
+                message: null
+            };
         }
 
-        res.render('/error', {
+        return {
+            status: 'error',
+            redirectUrl: null,
             message: Resource.msg('error.payment.not.valid', 'checkout', null)
-        });
-        return next();
+        };
     }
 
     getResult = commerceCaseService.get(commerceCaseId, {});
 
     if (!getResult.ok) {
-        res.render('/error', {
+        return {
+            status: 'error',
+            redirectUrl: null,
             message: getResult.userMessage || Resource.msg('error.technical', 'checkout', null)
-        });
-        return next();
+        };
     }
 
     checkout = payoneCheckoutStateHelper.getCheckout(getResult, checkoutId);
 
     if (!checkout || !payoneCheckoutStateHelper.getPaymentExecution(checkout, paymentExecutionId)) {
-        res.render('/error', {
+        return {
+            status: 'error',
+            redirectUrl: null,
             message: Resource.msg('error.payment.not.valid', 'checkout', null)
-        });
-        return next();
+        };
     }
 
     payoneCard3DSHelper.updatePaymentTransactionStatus(paymentTransaction, checkout, paymentExecutionId);
@@ -220,32 +219,102 @@ function handlePostRedirectOrderConfirmation(req, res, next) {
         );
         payoneCard3DSHelper.clearRedirectState(paymentTransaction);
 
-        res.redirect(URLUtils.url('Checkout-Begin', 'stage', 'payment').toString());
-        return next();
+        return {
+            status: 'rejected',
+            redirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString(),
+            message: null
+        };
     }
 
     if (payoneCheckoutStateHelper.isSuccessfulPostRedirectState(checkout, paymentExecutionId)) {
         if (order.status.value === Order.ORDER_STATUS_CREATED && !payoneCard3DSHelper.finalizeOrder(order, req)) {
-            res.render('/error', {
+            return {
+                status: 'error',
+                redirectUrl: null,
                 message: Resource.msg('error.technical', 'checkout', null)
-            });
-            return next();
+            };
         }
 
         storePostRedirectConfirmationOrder(req, order);
         payoneCard3DSHelper.clearRedirectState(paymentTransaction);
-        res.redirect(URLUtils.url('PayoneCommerce-PostRedirectOrderConfirm').toString());
+        return {
+            status: 'success',
+            redirectUrl: URLUtils.url('PayoneCommerce-PostRedirectOrderConfirm').toString(),
+            message: null
+        };
+    }
+
+    if (payoneCheckoutStateHelper.isRedirected(checkout, paymentExecutionId)) {
+        return {
+            status: 'pending',
+            redirectUrl: null,
+            message: null
+        };
+    }
+
+    return {
+        status: 'error',
+        redirectUrl: null,
+        message: Resource.msg('error.payment.not.valid', 'checkout', null)
+    };
+}
+
+/**
+ * Handles the PAYONE return from a post-redirect payment flow.
+ *
+ * @param {Object} req - Current request.
+ * @param {Object} res - Current response.
+ * @param {Function} next - Next middleware function.
+ * @returns {Object} Result of next().
+ */
+function handlePostRedirectOrderConfirmation(req, res, next) {
+    var orderNo = req.querystring.orderNo;
+    var returnNonce = req.querystring.nonce;
+    var result = resolvePostRedirectOrder(req, orderNo, returnNonce);
+    var viewData;
+
+    if (result.redirectUrl) {
+        res.redirect(result.redirectUrl);
+        return next();
+    }
+
+    if (result.status === 'pending') {
+        viewData = res.getViewData();
+        viewData.postRedirect = {
+            orderNo: orderNo,
+            nonce: returnNonce,
+            statusUrl: URLUtils.url('PayoneCommerce-PostRedirectStatus').toString()
+        };
+        res.render('payone/postRedirectProcessing', viewData);
         return next();
     }
 
     res.render('/error', {
-        message: Resource.msg('error.payment.not.valid', 'checkout', null)
+        message: result.message
     });
     return next();
 }
 
 /**
- * Renders the stable confirmation page for a finalized 3DS order stored in this session.
+ * Returns the latest post-redirect payment status for processing-page polling.
+ *
+ * @param {Object} req - Current request.
+ * @param {Object} res - Current response.
+ * @param {Function} next - Next middleware function.
+ * @returns {Object} Result of next().
+ */
+function handlePostRedirectOrderStatus(req, res, next) {
+    var result = resolvePostRedirectOrder(req, req.form.orderNo, req.form.nonce);
+
+    res.json({
+        status: result.status,
+        redirectUrl: result.redirectUrl
+    });
+    return next();
+}
+
+/**
+ * Renders the stable confirmation page for a finalized post-redirect order stored in this session.
  *
  * @param {Object} req - Current request.
  * @param {Object} res - Current response.
@@ -268,5 +337,6 @@ function renderPostRedirectOrderConfirmation(req, res, next) {
 
 module.exports = {
     handlePostRedirectOrderConfirmation: handlePostRedirectOrderConfirmation,
+    handlePostRedirectOrderStatus: handlePostRedirectOrderStatus,
     renderPostRedirectOrderConfirmation: renderPostRedirectOrderConfirmation
 };

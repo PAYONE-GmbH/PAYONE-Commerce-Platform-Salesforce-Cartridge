@@ -15,6 +15,7 @@ var PAYMENT_PRODUCT_IDS = {
     APPLE_PAY: 302,
     GOOGLE_PAY: 320,
     PAYPAL: 840,
+    WERO: 900,
     SEPA_DIRECT_DEBIT: 771,
     SECURED_INVOICE: 3390,
     SECURED_INSTALLMENT: 3391,
@@ -62,6 +63,10 @@ var SUPPORTED_PAYMENT_METHODS = {
     PAYONE_COMMERCE_STORE_PAY: {
         formId: 'payoneCommerceStorePayForm',
         buildKey: 'storepay'
+    },
+    PAYONE_COMMERCE_WERO: {
+        formId: 'payoneCommerceWeroForm',
+        buildKey: 'wero'
     }
 };
 
@@ -627,6 +632,20 @@ function buildPayPalPaymentMethodSpecificInput(context) {
 }
 
 /**
+ * Builds PAYONE Wero direct-sale redirect input.
+ *
+ * @returns {Object} PAYONE redirect payment input payload.
+ */
+function buildWeroPaymentMethodSpecificInput() {
+    return {
+        redirectPaymentMethodSpecificInput: {
+            paymentProductId: PAYMENT_PRODUCT_IDS.WERO,
+            requiresApproval: false
+        }
+    };
+}
+
+/**
  * Builds the PAYONE Store Pay input.
  * Store Pay creates only the checkout without executing a payment at checkout-creation time.
  *
@@ -658,6 +677,8 @@ function getPaymentMethodBuilder(buildKey) {
             return buildGooglePayPaymentMethodSpecificInput;
         case 'paypal':
             return buildPayPalPaymentMethodSpecificInput;
+        case 'wero':
+            return buildWeroPaymentMethodSpecificInput;
         case 'storepay':
             return buildStorePayPaymentMethodSpecificInput;
         default:

@@ -110,6 +110,9 @@ PayoneCommerceCheckoutHelper.optionPath = {
     },
     "PAYONE_COMMERCE_STORE_PAY": {
         "content": "checkout/billing/paymentOptions/payoneCommerceStorePayContent"
+    },
+    "PAYONE_COMMERCE_WERO": {
+        "content": "checkout/billing/paymentOptions/payoneCommerceWeroContent"
     }
 }
 
@@ -121,7 +124,8 @@ PayoneCommerceCheckoutHelper.forms = {
     "PAYONE_COMMERCE_SECURE_DIRECT_DEBIT": "payoneCommerceSecureDirectDebitForm",
     "PAYONE_COMMERCE_PAYPAL": "payoneCommercePaypalForm",
     "PAYONE_COMMERCE_GOOGLEPAY": "payoneCommerceGooglepayForm",
-    "PAYONE_COMMERCE_STORE_PAY": "payoneCommerceStorePayForm"
+    "PAYONE_COMMERCE_STORE_PAY": "payoneCommerceStorePayForm",
+    "PAYONE_COMMERCE_WERO": "payoneCommerceWeroForm"
 };
 
 PayoneCommerceCheckoutHelper.getUrls = function () {
