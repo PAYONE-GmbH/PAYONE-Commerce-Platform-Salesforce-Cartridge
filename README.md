@@ -49,9 +49,6 @@ For detailed setup instructions, refer to the [Integration Guide](documentation/
 - Apple Pay
 - Google Pay
 - SEPA Direct Debit
-- Bancontact
-- iDEAL
-- Paydirekt
 - And more — see Integration Guide for the full list
 
 ## Development
